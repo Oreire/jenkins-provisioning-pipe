@@ -1,0 +1,52 @@
+pipeline {
+    agent any 
+    environment {
+        AWS_ACCESS_KEY_ID =  credentials ('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials ('AWS_SECRET_ACCESS_KEY')
+          }
+    stages {
+        stage('Initialise terraform') {
+            steps {
+                sh '''
+                cd dev
+                terraform init
+                '''
+            }
+        }
+        stage('Terraform Plan ') {
+            steps {
+                sh '''
+                cd dev
+                terraform plan -var 'frontend_node=Nginx' -var 'backend_node=Pynode'
+                '''
+            }
+        }  
+        stage('Terraform Apply ') {
+            steps {
+                sh '''
+                cd dev
+                terraform apply -var 'frontend_node=Nginx' -var 'backend_node=Pynode' -auto-approve
+                '''
+            }
+        }
+        stage ('Manage Nginx') {
+            environment {
+                     NGINX_NODE = sh(script: cd dev; "terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
+            }
+            steps {
+                script {
+                    sshagent (credentials : ['SSH-TO-TERRA-Nodes']) {
+                        sh """
+                        env
+                        cd dev
+                        ssh  ec2-user@${NGINX_NODE} 'pwd'
+                       
+                        """
+                        
+                    }
+                }
+            }
+        }     
+    }
+}
+
