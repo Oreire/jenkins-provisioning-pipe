@@ -2,9 +2,9 @@ variable "ami_id" {}
 
 variable "instance_type_id" {}
 
-variable "backend_node" {}
+variable "node2" {}
 
-variable "frontend_node" {}
+variable "node1" {}
 
 variable "region" {}
 
