@@ -15,17 +15,18 @@ provider "aws" {
 
 }
 
-#Create Security Group for two EC2 Instances  named Nginx & Python  
+#Create Security Group for two EC2 Instances  named Nginx (Node 1)  
 
-resource "aws_security_group" "allow_ssh" {
-  name = "allow_ssh"
+resource "aws_security_group" "ssh_sg" {
+  name = "SSH-SG"
+  description = "Security Group for Node 1"
   # ... other configuration ...
   egress {
     from_port        = 0
     to_port          = 0
     protocol         = "-1"
     cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
+    
   }
 
   ingress {
@@ -33,7 +34,7 @@ resource "aws_security_group" "allow_ssh" {
     to_port          = 22
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
+    
   }
 
   ingress {
@@ -41,7 +42,36 @@ resource "aws_security_group" "allow_ssh" {
     to_port          = 8080
     protocol         = "tcp"
     cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
+    
+  }
+}
+
+#Create Security Group for two EC2 Instances  named Python (Node 2)
+
+resource "aws_security_group" "tls_sg" {
+  name = "TLS-SG"
+  description = "Security Group for Node 2"
+  # ... other configuration ...
+  egress {
+    from_port        = 0
+    to_port          = 0
+    protocol         = "-1"
+    cidr_blocks      = ["0.0.0.0/0"]
+      }
+
+  ingress {
+    from_port        = 22
+    to_port          = 22
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+     }
+
+  ingress {
+    from_port        = 65432
+    to_port          = 65432
+    protocol         = "tcp"
+    cidr_blocks      = ["0.0.0.0/0"]
+    
   }
 }
 
@@ -51,7 +81,7 @@ resource "aws_instance" "frontend_node" {
   ami                    = var.ami_id
   instance_type          = var.instance_type_id
   key_name               = var.key_name
-  vpc_security_group_ids = [aws_security_group.allow_ssh.id]
+  vpc_security_group_ids = [aws_security_group.ssh_sg.id]
   tags = {
     Name = var.frontend_node
   }
@@ -63,9 +93,8 @@ resource "aws_instance" "backend_node" {
   ami                    = var.ami_id
   instance_type          = var.instance_type_id
   key_name               = var.key_name
-  vpc_security_group_ids = [aws_security_group.allow_ssh.id]
+  vpc_security_group_ids = [aws_security_group.tls_sg.id]
   tags = {
     Name = var.backend_node
   }
 }
-
