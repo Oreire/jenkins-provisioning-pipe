@@ -9,7 +9,7 @@ terraform {
 }
 
 provider "aws" {
-  region     = var.region
+  region     = "eu-west-2" #var.region
   access_key = var.AWS_ACCESS_KEY_ID
   secret_key = var.AWS_SECRET_ACCESS_KEY
 
@@ -78,9 +78,9 @@ resource "aws_security_group" "tls_sg" {
 #Create AWS EC2 Instance (Frontend Node)
 
 resource "aws_instance" "node1" {
-  ami                    = var.ami_id
-  instance_type          = var.instance_type_id
-  key_name               = var.key_name
+  ami                    = "ami-0b45ae66668865cd6" #var.ami_id
+  instance_type          = "t2.micro" #var.instance_type_id
+  key_name               = "NewAxeCred" #var.key_name
   vpc_security_group_ids = [aws_security_group.ssh_sg.id]
   tags = {
     Name = var.node1
@@ -90,9 +90,9 @@ resource "aws_instance" "node1" {
 #Create AWS EC2 Instance (Backend Node)
 
 resource "aws_instance" "node2" {
-  ami                    = var.ami_id
-  instance_type          = var.instance_type_id
-  key_name               = var.key_name
+  ami                    = "ami-0b45ae66668865cd6" #var.ami_id
+  instance_type          = "t2.micro" #var.instance_type_id
+  key_name               = "NewAxeCred" #var.key_name
   vpc_security_group_ids = [aws_security_group.tls_sg.id]
   tags = {
     Name = var.node2

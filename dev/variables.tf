@@ -1,12 +1,12 @@
-variable "ami_id" {}
+#variable "ami_id" {}
 
-variable "instance_type_id" {}
+#variable "instance_type_id" {}
 
 variable "node2" {}
 
 variable "node1" {}
 
-variable "region" {}
+#variable "region" {}
 
 variable "AWS_ACCESS_KEY_ID" {
   type      = string
@@ -19,9 +19,9 @@ variable "AWS_SECRET_ACCESS_KEY" {
   sensitive = true
 }
 
-variable "key_name" {
+# variable "key_name" {
 
-  type      = string
-  sensitive = true
-}
+#   type      = string
+#   sensitive = true
+# }
 
