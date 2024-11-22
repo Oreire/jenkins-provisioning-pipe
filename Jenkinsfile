@@ -3,7 +3,7 @@ pipeline {
     environment {
         AWS_ACCESS_KEY_ID =  credentials ('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials ('AWS_SECRET_ACCESS_KEY')
-    }
+        }
     stages {
         stage('Initialise terraform') {
             steps {
@@ -29,6 +29,25 @@ pipeline {
                 '''
             }
         }
+        stage('Manage Nginx') {
+            environment {
+                     NGINX_NODE = sh(script: cd dev; "terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
+            }
+            steps {
+                script {
+                    sshagent (credentials : ['SSH_PRIVATE_KEY']) {
+                        sh """
+                        env
+                        cd dev
+                        ssh  ec2-user@${NGINX_NODE} 'pwd'
+                        ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} << 'EOF'
+                                'sudo yum update -y           # Update system (Amazon Linux)
+                                sudo amazon-linux-extras enable nginx1.12  # Enable NGINX
+                                sudo yum install nginx -y      # Install NGINX
+                                sudo systemctl start nginx     # Start NGINX service
+                                sudo systemctl enable nginx    # Enable NGINX on boot'
+                       EOF
+                            """
             
     }
 }
