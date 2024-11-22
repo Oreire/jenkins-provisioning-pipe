@@ -34,17 +34,16 @@ pipeline {
                 script {
                     sshagent (credentials : ['SSH_PRIVATE_KEY']) {
                         sh """
-                        env
                         cd dev
                         NGINX_NODE = "terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
                         ssh  ec2-user@${NGINX_NODE} 'pwd'
-                        ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} << 'EOF'
-                                'sudo yum update -y           # Update system (Amazon Linux)
-                                sudo amazon-linux-extras enable nginx1.12  # Enable NGINX
-                                sudo yum install nginx -y      # Install NGINX
-                                sudo systemctl start nginx     # Start NGINX service
-                                sudo systemctl enable nginx    # Enable NGINX on boot'
-                       EOF
+                        ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
+                                sudo yum update -y           
+                                sudo amazon-linux-extras enable nginx1.12  
+                                sudo yum install nginx -y      
+                                sudo systemctl start nginx     
+                                sudo systemctl enable nginx    
+                       '
                             """
                     }
                }
