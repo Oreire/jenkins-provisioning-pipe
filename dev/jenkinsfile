@@ -17,7 +17,7 @@ pipeline {
             steps {
                 sh '''
                 cd dev
-                terraform plan -var 'frontend_node=Nginx' -var 'backend_node=Pynode'
+                // terraform plan -var-file=dev.tfvars 
                 '''
             }
         }  
@@ -25,11 +25,11 @@ pipeline {
             steps {
                 sh '''
                 cd dev
-                terraform apply -var 'frontend_node=Nginx' -var 'backend_node=Pynode' -auto-approve
+                terraform apply -var-file=dev.tfvars -auto-approve
                 '''
             }
         }
-        stage ('Manage Nginx') {
+        stage('Manage Nginx') {
             environment {
                      NGINX_NODE = sh(script: cd dev; "terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
             }
@@ -53,7 +53,7 @@ pipeline {
                 }
             }
         }  
-         stage ('Manage PYTHON') {
+         stage('Manage PYTHON') {
             environment {
                      PYTHON_NODE = sh(script: cd dev; "terraform output  |  grep Pynode | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
             }
