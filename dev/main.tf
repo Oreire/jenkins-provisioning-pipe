@@ -10,8 +10,8 @@ terraform {
 
 provider "aws" {
   region     = "eu-west-2" #var.region
-  access_key = var.AWS_ACCESS_KEY_ID
-  secret_key = var.AWS_SECRET_ACCESS_KEY
+  #access_key = var.AWS_ACCESS_KEY_ID
+  #secret_key = var.AWS_SECRET_ACCESS_KEY
 
 }
 
@@ -20,7 +20,7 @@ provider "aws" {
 resource "aws_security_group" "ssh_sg" {
   name        = "SSH-SG"
   description = "Security Group for Node 1"
-  # ... other configuration ...
+    # ... other configuration ...
   egress {
     from_port   = 0
     to_port     = 0
@@ -79,8 +79,8 @@ resource "aws_security_group" "tls_sg" {
 
 resource "aws_instance" "node1" {
   ami                    = "ami-0b45ae66668865cd6" #var.ami_id
-  instance_type          = "t2.micro" #var.instance_type_id
-  key_name               = "NewAxeCred" #var.key_name
+  instance_type          = "t2.micro"              #var.instance_type_id
+  key_name               = "NewAxeCred"            #var.key_name
   vpc_security_group_ids = [aws_security_group.ssh_sg.id]
   tags = {
     Name = var.node1
@@ -91,8 +91,8 @@ resource "aws_instance" "node1" {
 
 resource "aws_instance" "node2" {
   ami                    = "ami-0b45ae66668865cd6" #var.ami_id
-  instance_type          = "t2.micro" #var.instance_type_id
-  key_name               = "NewAxeCred" #var.key_name
+  instance_type          = "t2.micro"              #var.instance_type_id
+  key_name               = "NewAxeCred"            #var.key_name
   vpc_security_group_ids = [aws_security_group.tls_sg.id]
   tags = {
     Name = var.node2
