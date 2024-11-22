@@ -29,16 +29,14 @@ pipeline {
                 '''
             }
         }
-        stage('Manage Nginx') {
-            environment {
-                     NGINX_NODE = sh(script: "cd dev; "terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
-            }
+        stage('INSTALL NGINX ON NODE 1') {
             steps {
                 script {
                     sshagent (credentials : ['SSH_PRIVATE_KEY']) {
                         sh """
                         env
                         cd dev
+                        NGINX_NODE = "terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
                         ssh  ec2-user@${NGINX_NODE} 'pwd'
                         ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} << 'EOF'
                                 'sudo yum update -y           # Update system (Amazon Linux)
@@ -48,6 +46,8 @@ pipeline {
                                 sudo systemctl enable nginx    # Enable NGINX on boot'
                        EOF
                             """
-            
+                    }
+             }
     }
+
 }
