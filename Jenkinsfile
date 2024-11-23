@@ -29,9 +29,9 @@ pipeline {
                 '''
             }
         }
-        stage('Manage Nginx') {
+        stage('Install Nginx') {
             environment {
-                Ngnix = sh(script: "cd dev; terraform output  |  grep Nginx_IP | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
+                NGINX_NODE = sh(script: "cd dev; terraform output  |  grep Nginx_IP | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
             }
             steps {
                 script {
@@ -39,14 +39,14 @@ pipeline {
                         sh """
                         env
                         cd dev
-                        ssh -o StrictHostKeyChecking=no ec2-user@${Ngnix} 'sudo yum update -y && sudo yum install git -y && sudo yum install nginx -y && sudo systemctl start nginx && sudo systemctl enable nginx'
+                        ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} 'sudo yum update -y && sudo yum install git -y && sudo yum install nginx -y && sudo systemctl start nginx && sudo systemctl enable nginx'
                         """
                     }
                 }
             }
         }
 
-        /* stage('Manage Python') {
+        /* stage('Install Python') {
             environment {
                 PYTHON_NODE = sh(script: "cd dev; terraform output  |  grep python_machine_public_dns | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
             }
