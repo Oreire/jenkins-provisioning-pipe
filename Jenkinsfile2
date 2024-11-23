@@ -22,7 +22,6 @@ pipeline {
                         sudo systemctl enable nginx '
                     
                     }  """
-                
                 }
             }
         }
