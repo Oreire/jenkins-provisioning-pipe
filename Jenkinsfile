@@ -38,12 +38,11 @@ pipeline {
                         NGINX_NODE = "terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
                         ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
                                 sudo yum install nginx -y      
-                                sudo systemctl start nginx     
-                                sudo systemctl enable nginx '
-                            """
+                                sudo service nginx start '
+                      """
                     }
                }
-             }
+            }
         }
    }
 }
