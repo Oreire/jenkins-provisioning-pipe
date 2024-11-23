@@ -48,7 +48,7 @@ pipeline {
 
         /* stage('Install Python') {
             environment {
-                PYTHON_NODE = sh(script: "cd dev; terraform output  |  grep python_machine_public_dns | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
+                PYTHON_NODE = sh(script: "cd dev; terraform output  |  grep Pynode | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
             }
             steps {
                 script {
