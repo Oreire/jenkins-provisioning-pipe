@@ -24,11 +24,11 @@ pipeline {
                 '''
             }
         }  
-        stage('Terraform Apply ') {
+        stage('Terraform Action ') {
             steps {
                 sh '''
                 cd dev
-                terraform apply -var 'node1=Nginx' -var 'node2=Pynode' -auto-approve
+                terraform ${action} -var 'node1=Nginx' -var 'node2=Pynode' -auto-approve
                 '''
             }
         }
