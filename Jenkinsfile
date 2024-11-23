@@ -30,22 +30,38 @@ pipeline {
             }
         }
         stage('Manage Nginx') {
-            
+            environment {
+                NGINX_NODE = sh(script: "cd dev; terraform output  |  grep nginx_machine_public_dns | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
+            }
             steps {
                 script {
                     sshagent (credentials : ['SSH_PRIVATE_KEY']) {
                         sh """
+                        env
                         cd dev
-                        NGINX_NODE = "terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'"
-                        ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
-                                sudo yum update -y
-                                sudo yum install nginx -y
-                                sudo service nginx start 
-                                sudo systemctl enable nginx '
-                            """
-                     }
-                 }
-             }
-         }
+                        ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} 'sudo yum update -y && sudo yum install git -y && sudo yum install nginx -y && sudo systemctl start nginx && sudo systemctl enable nginx'
+                        """
+                    }
+                }
+            }
+        }
+
+        /* stage('Manage Python') {
+            environment {
+                PYTHON_NODE = sh(script: "cd dev; terraform output  |  grep python_machine_public_dns | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
+            }
+            steps {
+                script {
+                    sshagent (credentials : ['SSH_PRIVATE_KEY']) {
+                        sh """
+                        env
+                        cd dev
+                        ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'sudo yum update -y && sudo yum install python3 -y'
+                        scp -o StrictHostKeyChecking=no ../hello.py ec2-user@${PYTHON_NODE}:/tmp/hello.py
+                        """
+                    }
+                }
+            }
+        } */
     }
 }
