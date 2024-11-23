@@ -10,7 +10,7 @@ pipeline {
     }
 
     stages {
-        stage('Connect to EC2 and Install Nginx') 
+         stage('Connect to EC2 and Install Nginx') 
            steps {
                 sshagent (credentials: [SSH_PRIVATE_KEY]) {
                     sh """
