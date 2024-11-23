@@ -4,7 +4,6 @@ pipeline {
     environment {
         REMOTE_USER = 'ec2-user'  
         REMOTE_HOST = 'ec2-52-56-147-184.eu-west-2.compute.amazonaws.com'  
-        SSH_PRIVATE_KEY = credentials('SSH_PRIVATE_KEY')
         AWS_ACCESS_KEY_ID =  credentials ('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials ('AWS_SECRET_ACCESS_KEY')
     }
@@ -16,11 +15,12 @@ pipeline {
                 sshagent (credentials: [SSH_PRIVATE_KEY]) {
                     sh """
                     cd dev
-                        ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} 
+                        ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} ' 
                         sudo yum update -y
                         sudo yum install nginx -y
                         sudo service nginx start 
-                        sudo systemctl enable nginx
+                        sudo systemctl enable nginx '
+                    
                     }  """
                 
                 }
