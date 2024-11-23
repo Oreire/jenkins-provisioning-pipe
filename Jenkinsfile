@@ -36,14 +36,10 @@ pipeline {
                         sh """
                         cd dev
                         NGINX_NODE = "terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
-                        ssh  ec2-user@${NGINX_NODE} 'pwd'
                         ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
-                                sudo yum update -y           
-                                sudo amazon-linux-extras enable nginx1.12  
                                 sudo yum install nginx -y      
                                 sudo systemctl start nginx     
-                                sudo systemctl enable nginx    
-                       '
+                                sudo systemctl enable nginx '
                             """
                     }
                }
