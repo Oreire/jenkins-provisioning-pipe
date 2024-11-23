@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Install Nginx') {
             environment {
-                NGINX_NODE = sh(script: "cd dev; terraform output  |  grep Nginx_IP | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
+                NGINX_NODE = sh(script: "cd dev; terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
             }
             steps {
                 script {
