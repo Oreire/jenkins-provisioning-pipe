@@ -46,7 +46,7 @@ pipeline {
             }
         }
 
-        /* stage('Install Python') {
+        stage('Install Python') {
             environment {
                 PYTHON_NODE = sh(script: "cd dev; terraform output  |  grep Pynode | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
             }
@@ -62,6 +62,6 @@ pipeline {
                     }
                 }
             }
-        } */
+        }
     }
 }
