@@ -35,7 +35,7 @@ pipeline {
             }
             steps {
                 script {
-                    sshagent (credentials : ['SSH_PRIVATE_KEY']) {
+                    sshagent (credentials : ['PRIVATE_SSH_KEY']) {
                         sh """
                         env
                         cd dev
@@ -52,7 +52,7 @@ pipeline {
             }
             steps {
                 script {
-                    sshagent (credentials : ['SSH_PRIVATE_KEY']) {
+                    sshagent (credentials : ['PRIVATE_SSH_KEY']) {
                         sh """
                         env
                         cd dev
