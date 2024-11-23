@@ -10,10 +10,8 @@ pipeline {
     }
 
     stages {
-         stage('Connect to EC2 and Install Nginx') {
-         environment {
-                     NGINX_NODE = sh(script: "cd dev; "terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
-            } 
+         stage('Connect to EC2 and Install Nginx') 
+          
            steps {
                 sshagent (credentials: [SSH_PRIVATE_KEY]) {
                     sh """
@@ -27,5 +25,4 @@ pipeline {
                 }
          }
     }
-}
 }

@@ -29,5 +29,27 @@ pipeline {
                 '''
             }
         }
+        stage ('Install Nginx on Nginx Node 1') {
+            environment {
+                NGINX_NODE = sh(script: "cd dev; terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
+            }
+            steps {
+                script {
+                    sshagent (credentials : ['SSH_PRIVATE_KEY']) {
+                        sh """
+                        env
+                        cd dev
+                        ssh  ec2-user@${Ngnix} 'pwd' 
+                        ssh -o StrictHostKeyChecking=no ec2-user@${Ngnix} '
+                                 sudo yum update -y
+                                 sudo yum install nginx -y
+                                 sudo service nginx start 
+                                 sudo systemctl enable nginx '                       
+                        """
+                        
+                    }
+                }
+            }
+        }
     }
 }
