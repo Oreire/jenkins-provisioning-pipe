@@ -11,7 +11,6 @@ pipeline {
     stages {
         stage('Connect to EC2 and Install Nginx') {
             steps {
-                script {
                 sshagent (credentials: [SSH_PRIVATE_KEY]) {
                     sh """
                     cd dev
@@ -26,4 +25,3 @@ pipeline {
             }
         }
     }
-}
