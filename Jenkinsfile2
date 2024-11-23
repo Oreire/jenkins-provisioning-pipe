@@ -16,19 +16,13 @@ pipeline {
                     sh """
                         ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} << EOF
                         sudo yum update -y
-                        sudo amazon-linux-extras install nginx1.12 -y
-                        sudo systemctl start nginx
+                        sudo yum install nginx -y
+                        sudo service nginx start 
                         sudo systemctl enable nginx
                         EOF
                     """
                 }
             }
-        }
-    }
-
-    post {
-        always {
-            cleanWs()
         }
     }
 }
