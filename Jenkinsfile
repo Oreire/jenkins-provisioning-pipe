@@ -33,7 +33,7 @@ pipeline {
             
             steps {
                 script {
-                    sshagent (credentials : ['SSH-TO-TERRA-Nodes']) {
+                    sshagent (credentials : ['SSH_PRIVATE_KEY']) {
                         sh """
                         cd dev
                         NGINX_NODE = "terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'"
