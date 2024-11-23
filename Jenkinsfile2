@@ -12,14 +12,16 @@ pipeline {
     stages {
         stage('Connect to EC2 and Install Nginx') {
             steps {
+                script {
                 sshagent (credentials: [SSH_PRIVATE_KEY]) {
                     sh """
+                    cd dev
                         ssh -o StrictHostKeyChecking=no ${REMOTE_USER}@${REMOTE_HOST} 
                         sudo yum update -y
                         sudo yum install nginx -y
                         sudo service nginx start 
                         sudo systemctl enable nginx
-                      """
+                    }  """
                 }
             }
         }
