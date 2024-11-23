@@ -40,6 +40,7 @@ pipeline {
                         sh """
                         env
                         cd dev
+                        ssh  ec2-user@${NGINX_NODE} 'pwd'
                         ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
                                 sudo yum install nginx -y      
                                 sudo service nginx start '
