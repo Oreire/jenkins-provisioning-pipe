@@ -30,16 +30,13 @@ pipeline {
             }
         }
         stage('Manage Nginx') {
-            environment {
-                     NGINX_NODE = "terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
-            }
+            
             steps {
                 script {
                     sshagent (credentials : ['SSH-TO-TERRA-Nodes']) {
                         sh """
-                        env
                         cd dev
-                        ssh  ec2-user@${NGINX_NODE} 'pwd'
+                        NGINX_NODE = "terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'"
                         ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
                                 sudo yum update -y
                                 sudo yum install nginx -y
