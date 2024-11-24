@@ -23,7 +23,7 @@
   
   ##destroy
 
-# AWS Creentials
+# AWS Credentials
   
   ##The Jenkine pipeline was configured to accpet thes secret keys via the Jenkins UI
 
@@ -31,7 +31,7 @@
 
   ##This was also configured through the Jenkins UI
 
-# JENKINS-SERVER
+# Jenkins-Server
 
   #Hosted on Docker Image 
   
