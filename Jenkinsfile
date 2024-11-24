@@ -67,5 +67,15 @@ pipeline {
                 }
             }
         }
-    }
+        post {
+        success {
+            echo  "The pipeline has succeeded"
+        }
+        failure  {
+            echo  "This pipeline has NOT succeeded"
+        }
+        always {
+            echo "always execute"
+        }
+    } 
 }
