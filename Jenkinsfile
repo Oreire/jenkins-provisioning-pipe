@@ -32,7 +32,7 @@ pipeline {
                 '''
             }
         }
-        stage('Install Nginx') {
+        /* stage('Install Nginx') {
             environment {
                 NGINX_NODE = sh(script: "cd dev; terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
             }
@@ -66,14 +66,7 @@ pipeline {
                     }
                 }
             }
-        }
-        stage('Terraform Destroy ') {
-            steps {
-                sh '''
-                cd dev
-                terraform ${action} -var 'node1=Nginx' -var 'node2=Pynode' -auto-approve
-                '''
-            }
-        }
+        } */
+        
     }
 }
