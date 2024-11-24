@@ -67,16 +67,18 @@ pipeline {
                 }
             }
         }
-        post {
-        success {
-            echo  "The pipeline has succeeded"
+        stage('Report Status') {
+            post {
+                success {
+                    echo  "The pipeline has succeeded"
+            }
+                failure  {
+                    echo  "This pipeline has NOT succeeded"
         }
-        failure  {
-            echo  "This pipeline has NOT succeeded"
-        }
-        always {
-            echo "always execute"
+            always {
+             echo "always execute"
         }
     }
-    } 
+   }
+  } 
 }
