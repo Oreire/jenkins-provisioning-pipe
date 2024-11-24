@@ -24,7 +24,7 @@ pipeline {
                 '''
             }
         }  
-        stage('Terraform Action ') {
+        stage('Terraform Apply ') {
             steps {
                 sh '''
                 cd dev
@@ -65,6 +65,14 @@ pipeline {
                         """
                     }
                 }
+            }
+        }
+        stage('Terraform Destroy ') {
+            steps {
+                sh '''
+                cd dev
+                terraform ${action} -var 'node1=Nginx' -var 'node2=Pynode' -auto-approve
+                '''
             }
         }
     }
