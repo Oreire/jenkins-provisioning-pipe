@@ -28,7 +28,7 @@ Content-Type: text/html
 
 <html>
     <body>
-        <h1>Your Message:</h1>
+        <h1>This is your Message:</h1>
         <p>{message}</p>
     </body>
 </html>
