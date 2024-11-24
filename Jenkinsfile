@@ -68,7 +68,8 @@ pipeline {
             }
         }
         stage('Report Status') {
-            post {
+            steps{
+              post {
                 success {
                     echo  "The pipeline has succeeded"
             }
@@ -81,4 +82,5 @@ pipeline {
     }
    }
   } 
+  }
 }
