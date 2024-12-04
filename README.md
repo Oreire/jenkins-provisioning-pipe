@@ -5,9 +5,11 @@
 
 # Jenkinsfile contains the pipeline scripts for the provisioning of Node 1 (Nginx) & Node 2 (Pynode)
   
-  ##Five key stages defined:
+  ##Six key stages defined:
 
     ##Terraform Initialisation
+
+    ##Terraform fmt & validate
 
     ##Terraform Plan
     

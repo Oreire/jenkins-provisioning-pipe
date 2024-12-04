@@ -9,8 +9,7 @@ terraform {
 }
 
 provider "aws" {
-  region     = "eu-west-2" #var.region
-  
+  region     = "eu-west-2"   
 }
 
 #Create Security Group for two EC2 Instances  named Nginx (Node 1)  
@@ -26,7 +25,6 @@ resource "aws_security_group" "ssh_sg" {
     cidr_blocks = ["0.0.0.0/0"]
 
   }
-
   ingress {
     from_port   = 22
     to_port     = 22
@@ -34,7 +32,6 @@ resource "aws_security_group" "ssh_sg" {
     cidr_blocks = ["0.0.0.0/0"]
 
   }
-
   ingress {
     from_port   = 80
     to_port     = 80
@@ -56,14 +53,12 @@ resource "aws_security_group" "tls_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
   ingress {
     from_port   = 65432
     to_port     = 65432

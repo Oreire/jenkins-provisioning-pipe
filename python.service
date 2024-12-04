@@ -1,0 +1,4 @@
+[Unit]
+
+[Service]
+ExecStart=/bin/sh -c "nohup python3 /tmp/code/hello.py"

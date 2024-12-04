@@ -28,7 +28,7 @@ Content-Type: text/html
 
 <html>
     <body>
-        <h1>Your Message:</h1>
+        <h1>Hello there, here's your message:</h1>
         <p>{message}</p>
     </body>
 </html>
@@ -55,4 +55,3 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as server_socket:
         client_thread = threading.Thread(target=handle_client, args=(conn, addr))
         client_thread.start()
         print(f"Started thread for {addr}")
-
