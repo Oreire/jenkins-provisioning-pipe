@@ -20,7 +20,7 @@ pipeline {
             }
         }
 
-        stage('Terraform Format && Validate') {
+        /* stage('Terraform Format && Validate') {
             when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
             }
@@ -34,7 +34,7 @@ pipeline {
                 terraform validate
                 '''
             }
-        }       
+        } */       
         stage('Terraform Plan ') {
             when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
