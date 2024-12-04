@@ -21,6 +21,9 @@ pipeline {
         }
 
         stage('Terraform Format && Validate') {
+            when {
+                expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
+            }
             steps {
                 script {
                     echo "${params.DEPLOY_OPTIONS}"
