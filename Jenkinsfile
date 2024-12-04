@@ -54,7 +54,7 @@ pipeline {
             steps {
                 sh '''
                 cd dev
-                terraform ${action} -var 'node1=Nginx' -var 'node2=Pynode' -auto-approve
+                terraform apply -var 'node1=Nginx' -var 'node2=Pynode' -auto-approve
                 '''
             }
         }
