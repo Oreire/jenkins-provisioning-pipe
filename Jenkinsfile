@@ -27,6 +27,16 @@ pipeline {
                 sh '''
                 cd dev
                 terraform fmt -check
+                '''
+            }
+        }
+        stage('Validate terraform') {
+            steps {
+                /* script {
+                    echo "${params.DEPLOY_OPTIONS}"
+                } */
+                sh '''
+                cd dev
                 terraform validate
                 '''
             }
