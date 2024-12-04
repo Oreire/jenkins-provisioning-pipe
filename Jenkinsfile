@@ -4,15 +4,15 @@ pipeline {
         AWS_ACCESS_KEY_ID =  credentials ('AWS_ACCESS_KEY_ID')
         AWS_SECRET_ACCESS_KEY = credentials ('AWS_SECRET_ACCESS_KEY')
         }
-        parameters {
+        /* parameters {
         choice (choices: "ALL\nINFRA\nAPPS", description: " This is to manage pipeline steps", name: "DEPLOY_OPTIONS")
-    }
+    } */
     stages {
         stage('Initialise terraform') {
             steps {
-                script {
+                /* script {
                     echo "${params.DEPLOY_OPTIONS}"
-                }
+                } */
                 sh '''
                 cd dev
                 terraform init
@@ -32,9 +32,9 @@ pipeline {
             }
         }
         stage('Terraform Plan ') {
-            when {
+            /* when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
-            }
+            } */
             steps {
                 sh '''
                 cd dev
@@ -43,9 +43,9 @@ pipeline {
             }
         }  
         stage('Terraform Apply ') {
-            when {
+            /* when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
-            }
+            } */
             steps {
                 sh '''
                 cd dev
@@ -54,9 +54,9 @@ pipeline {
             }
         }
         stage('Manage Apps') {
-            when {
+            /* when {
                 expression  { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL' }
-            }
+            } */
             environment {
                 NGINX_NODE = sh(script: "cd dev; terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
                 PYTHON_NODE = sh(script: "cd dev; terraform output  |  grep Pynode | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
@@ -75,6 +75,8 @@ pipeline {
                 }
             }
         }
+    }
+}
         /* stage ('Notification') {
             steps {
                 script {
