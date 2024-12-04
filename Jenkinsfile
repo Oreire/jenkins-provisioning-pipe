@@ -19,7 +19,19 @@ pipeline {
                 '''
             }
         }
-                
+
+        stage('Terraform Format && Validate') {
+            steps {
+                script {
+                    echo "${params.DEPLOY_OPTIONS}"
+                }
+                sh '''
+                cd dev
+                terraform fmt -check
+                terraform validate
+                '''
+            }
+        }       
         stage('Terraform Plan ') {
             when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
