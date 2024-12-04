@@ -16,7 +16,7 @@ provider "aws" {
 
 resource "aws_security_group" "ssh_sg" {
   name        = "SSH-SG"
-  description = "Security Group for Node 1"
+  description = "Security Group for Nginx Node 1"
     # ... other configuration ...
   egress {
     from_port   = 0
@@ -45,7 +45,7 @@ resource "aws_security_group" "ssh_sg" {
 
 resource "aws_security_group" "tls_sg" {
   name        = "TLS-SG"
-  description = "Security Group for Node 2"
+  description = "Security Group for Python Node 2"
   # ... other configuration ...
   egress {
     from_port   = 0
