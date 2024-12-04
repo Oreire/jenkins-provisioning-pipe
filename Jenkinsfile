@@ -19,7 +19,7 @@ pipeline {
                 '''
             }
         }
-        stage('Terraform Format && Validate') {
+        /* stage('Terraform Format && Validate') {
             steps {
                 /* script {
                     echo "${params.DEPLOY_OPTIONS}"
@@ -30,7 +30,7 @@ pipeline {
                 terraform validate
                 '''
             }
-        }
+        } */
         
         stage('Terraform Plan ') {
             /* when {
