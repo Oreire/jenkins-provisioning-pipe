@@ -19,7 +19,7 @@ pipeline {
                 '''
             }
         }
-        stage('Format && Validate terraform') {
+        stage('Terraform Format && Validate') {
             steps {
                 /* script {
                     echo "${params.DEPLOY_OPTIONS}"
@@ -27,20 +27,11 @@ pipeline {
                 sh '''
                 cd dev
                 terraform fmt -check
-                '''
-            }
-        }
-        stage('Validate terraform') {
-            steps {
-                /* script {
-                    echo "${params.DEPLOY_OPTIONS}"
-                } */
-                sh '''
-                cd dev
                 terraform validate
                 '''
             }
         }
+        
         stage('Terraform Plan ') {
             /* when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
@@ -86,8 +77,7 @@ pipeline {
             }
         }
     }
-}
-        /* stage ('Notification') {
+      /* stage ('Notification') {
             steps {
                 script {
                     withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
