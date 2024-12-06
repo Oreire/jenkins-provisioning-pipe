@@ -135,12 +135,11 @@ pipeline {
                           --data '{"channel": "devops-masterclass-2024","text" : "This Jenkins Alert indicates pipeline BUILD FAILURE"}'  \
                           https://slack.com//api/chat.postMessage 
                         """
-                    }
-                }       
-           }
+                        }
+                    }       
+                }
+            }
         }
     }
 }
-
-
         
