@@ -110,6 +110,16 @@ pipeline {
         }
     }
     
+    /* stage('Run Tests') {
+        steps { 
+            script { 
+                echo 'Running tests...' 
+                } 
+                sh ''' 
+                cd dev 
+                pytest hello.py 
+                ''' 
+    } */
     post {
         success {
             script {
