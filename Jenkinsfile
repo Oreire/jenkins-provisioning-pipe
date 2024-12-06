@@ -23,7 +23,7 @@ pipeline {
 
         stage('Terraform Format and Validate ') {
             when {
-                expression  { params.DEPLOY_OPTIONS == 'FMTVAL' || params.DEPLOY_OPTIONS == 'ALL' }
+                expression  { params.DEPLOY_OPTIONS == 'FMTVAL' }
             } 
             steps {
                 sh '''
@@ -45,7 +45,7 @@ pipeline {
                 terraform validate
                 '''
             }
-        } */
+        } */ 
 
         stage('Terraform Plan ') {
             when {
