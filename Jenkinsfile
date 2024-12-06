@@ -64,17 +64,17 @@ pipeline {
             }
             environment {
                 NGINX_NODE = sh(script: "cd dev; terraform output | grep Nginx | awk -F\\= '{print \$2}'", returnStdout: true).trim()
-                PYTHON_NODE = sh(script: "cd dev; terraform output | grep Pynode | awk -F\\= '{print \$2}'", returnStdout: true).trim()
+                /* PYTHON_NODE = sh(script: "cd dev; terraform output | grep Pynode | awk -F\\= '{print \$2}'", returnStdout: true).trim() */
             }
             steps {
                 sh '''
                 cd dev
                 terraform apply -var 'node1=Nginx' -var 'node2=Pynode' -auto-approve
                 '''
-                script {
+                /* script {
                     echo "NGINX_NODE: ${NGINX_NODE}"
                     echo "PYTHON_NODE: ${PYTHON_NODE}"
-                }
+                } */
             }
         }
 
@@ -101,8 +101,8 @@ pipeline {
                         env
                         cd dev
                         ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} 'sudo yum update -y && sudo yum install git -y && sudo yum install nginx -y && sudo systemctl start nginx && sudo systemctl enable nginx'
-                        ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'sudo yum update -y && sudo yum install python3 -y'
-                        scp -o StrictHostKeyChecking=no ../hello.py ec2-user@${PYTHON_NODE}:/tmp/hello.py
+                        /* ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'sudo yum update -y && sudo yum install python3 -y'
+                        scp -o StrictHostKeyChecking=no ../hello.py ec2-user@${PYTHON_NODE}:/tmp/hello.py */
                         """
                     }
                 }
