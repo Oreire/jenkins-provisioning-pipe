@@ -108,7 +108,11 @@ pipeline {
     }
 } */
         stage ('Notification') {
-                   
+            steps {
+                // Your build steps here
+                echo 'This is the Build Outcome'
+            }
+                  
             post {
                 success {
                     script {
@@ -124,7 +128,7 @@ pipeline {
                     }
                 }
         } 
-                failure  {
+            failure  {
                     script {
                         withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
 
@@ -135,9 +139,8 @@ pipeline {
                           --data '{"channel": "devops-masterclass-2024","text" : "This Jenkins Alert indicates pipeline BUILD FAILURE"}'  \
                           https://slack.com//api/chat.postMessage 
                         """
-                        }
-                    }       
-                }
+                    }
+                }       
             }
         }
     }
