@@ -20,7 +20,7 @@ pipeline {
             }
         }
 
-        stage('Terraform Format ') {
+        stage('Terraform Format & Validate') {
             when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
             }
