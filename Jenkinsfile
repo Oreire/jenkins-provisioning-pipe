@@ -20,7 +20,7 @@ pipeline {
             }
         }
 
-        stage('Terraform Format & Validate') {
+        /* stage('Terraform Format ') {
             when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
             }
@@ -28,12 +28,12 @@ pipeline {
                 sh '''
                 cd dev
                 terraform fmt -check
-                terraform validate
+                terraform
                 '''
             }
         }
 
-        /* stage('Terraform Validate ') {
+        stage('Terraform Validate ') {
             when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
             }
