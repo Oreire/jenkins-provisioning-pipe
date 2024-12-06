@@ -124,8 +124,7 @@ pipeline {
                         """
                     }
                 }
-        } 
-            failure  {
+                failure  {
                     script {
                         withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
 
