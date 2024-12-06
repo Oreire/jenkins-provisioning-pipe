@@ -95,7 +95,7 @@ pipeline {
         }
     }
 } */
-      /* stage ('Notification') {
+      stage ('Notification') {
             steps {
                 script {
                     withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
@@ -104,7 +104,7 @@ pipeline {
                           curl -X POST \
                           -H 'Authorization: Bearer ${SLACK_ID}' \
                           -H 'Content-Type: application/json' \
-                          --data '{"channel": "devops-masterclass-2024","text" : "Hello, testing"}'  \
+                          --data '{"channel": "devops-masterclass-2024","text" : "Hello, this is a Jenkins Alert Testing"}'  \
                           https://slack.com//api/chat.postMessage 
                         """
                     }
@@ -114,7 +114,7 @@ pipeline {
         
         post {
         success {
-            echo  "pipeline Build has Succeeded"
+            echo  "Pipeline Build has Succeeded"
         }
         failure  {
             echo  "Pipeline Build has Failed"
@@ -125,5 +125,5 @@ pipeline {
         
         }
     }
-} */
+
 }
