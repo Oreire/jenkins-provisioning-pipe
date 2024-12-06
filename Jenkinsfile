@@ -5,7 +5,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials ('AWS_SECRET_ACCESS_KEY')
         }
         parameters {
-        choice (choices: "ALL\nINFRA\nAPPS\nDEL", description: " This is to manage pipeline steps", name: "DEPLOY_OPTIONS")
+        choice (choices: "ALL\nINFRA\nAPPS\nDEL\nFMTVAL", description: " This is to manage pipeline steps", name: "DEPLOY_OPTIONS")
     }
     stages {
         stage('Initialise terraform') {
@@ -21,19 +21,20 @@ pipeline {
             }
         }
 
-        /* stage('Terraform Format ') {
+        stage('Terraform Format and Validate ') {
             when {
-                expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
+                expression  { params.DEPLOY_OPTIONS == 'FMTVAL' || params.DEPLOY_OPTIONS == 'ALL' }
             } 
             steps {
                 sh '''
                 cd dev
                 terraform fmt -check
+                terraform validate
                 
                 '''
             }
         }
-        stage('Terraform Validate ') {
+        /* stage('Terraform Validate ') {
             when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
             } 
