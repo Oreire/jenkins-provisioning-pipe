@@ -20,7 +20,7 @@ pipeline {
             }
         }
 
-        stage('Terraform Format ') {
+        /* stage('Terraform Format ') {
             when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
             } 
@@ -43,7 +43,7 @@ pipeline {
                 terraform validate
                 '''
             }
-        }
+        } */
 
         stage('Terraform Plan ') {
             when {
@@ -138,7 +138,7 @@ pipeline {
 
 } */
 
-stage ('Notification') {
+/* stage ('Notification') {
         steps {            
         post {
         success {
@@ -172,7 +172,7 @@ stage ('Notification') {
            }
             }
         }
-    }
+    } */
 }
 
 }
