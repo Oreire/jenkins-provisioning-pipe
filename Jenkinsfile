@@ -16,6 +16,8 @@ pipeline {
                 sh '''
                 cd dev
                 terraform init
+                terraform fmt -check
+                terraform validate
                 '''
             }
         }
@@ -105,45 +107,12 @@ pipeline {
         }
     }
 } */
-      /* stage ('Notification') {
-            steps {
-                script {
-                    withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
-
-                        sh """
-                          curl -X POST \
-                          -H 'Authorization: Bearer ${SLACK_ID}' \
-                          -H 'Content-Type: application/json' \
-                          --data '{"channel": "devops-masterclass-2024","text" : "Hello, this is a Jenkins Alert Testing"}'  \
-                          https://slack.com//api/chat.postMessage 
-                        """
-                    }
-                }
-            }
-        }
-        
-        post {
-        success {
-            echo  "Pipeline Build has Succeeded"
-        }
-        failure  {
-            echo  "Pipeline Build has Failed"
-        }
-        always {
-            echo "always execute"
-            }
-        
-        }
-    }
-
-} */
-
-stage ('Notification') {
+        stage ('Notification') {
                    
-    post {
-            success {
-                script {
-                    withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
+            post {
+                success {
+                    script {
+                        withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
 
                         sh """
                           curl -X POST \
@@ -155,10 +124,9 @@ stage ('Notification') {
                     }
                 }
         } 
-       
-            failure  {
-                script {
-                    withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
+                failure  {
+                    script {
+                        withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
 
                         sh """
                           curl -X POST \
@@ -170,9 +138,9 @@ stage ('Notification') {
                     }
                 }       
            }
-            }
         }
     }
 }
+
 
         
