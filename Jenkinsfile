@@ -28,21 +28,22 @@ pipeline {
                 sh '''
                 cd dev
                 terraform fmt -check
+                terraform validate
                 '''
             }
         }
 
-        stage('Terraform Validate ') {
+        /* stage('Terraform Validate ') {
             when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
             }
             steps {
                 sh '''
                 cd dev
-                terraform validate'
+                terraform validate
                 '''
             }
-        }
+        } */
 
         stage('Terraform Plan ') {
             when {
