@@ -1,11 +1,11 @@
 pipeline {
     agent any 
     environment {
-        AWS_ACCESS_KEY_ID =  credentials ('AWS_ACCESS_KEY_ID')
-        AWS_SECRET_ACCESS_KEY = credentials ('AWS_SECRET_ACCESS_KEY')
-        }
-        parameters {
-        choice (choices: "ALL\nINFRA\nAPPS\nDEL\nFMTVAL", description: " This is to manage pipeline steps", name: "DEPLOY_OPTIONS")
+        AWS_ACCESS_KEY_ID = credentials('AWS_ACCESS_KEY_ID')
+        AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
+    }
+    parameters {
+        choice(choices: "ALL\nINFRA\nAPPS\nDEL\nFMTVAL", description: "This is to manage pipeline steps", name: "DEPLOY_OPTIONS")
     }
     stages {
         stage('Initialise terraform') {
@@ -16,39 +16,39 @@ pipeline {
                 sh '''
                 cd dev
                 terraform init
-                
                 '''
             }
         }
 
-        /* stage('Terraform Format ') {
+        /* Uncomment these stages if needed
+        stage('Terraform Format') {
             when {
-                expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
-            } 
+                expression { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
+            }
             steps {
                 sh '''
                 cd dev
                 terraform fmt -check
-                                
                 '''
             }
-        } */
-        /* stage('Terraform Validate ') {
+        }
+        
+        stage('Terraform Validate') {
             when {
-                expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
-            } 
+                expression { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
+            }
             steps {
                 sh '''
                 cd dev
-                
                 terraform validate
                 '''
             }
-        } */ 
+        }
+        */
 
-        stage('Terraform Plan ') {
+        stage('Terraform Plan') {
             when {
-                expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
+                expression { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
             }
             steps {
                 sh '''
@@ -58,9 +58,9 @@ pipeline {
             }
         }
 
-        stage('Terraform Apply ') {
+        stage('Terraform Apply') {
             when {
-                expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
+                expression { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
             }
             steps {
                 sh '''
@@ -70,9 +70,9 @@ pipeline {
             }
         }
 
-        stage('Terraform Destroy ') {
+        stage('Terraform Destroy') {
             when {
-                expression  { params.DEPLOY_OPTIONS == 'DEL' }
+                expression { params.DEPLOY_OPTIONS == 'DEL' }
             }
             steps {
                 sh '''
@@ -84,15 +84,15 @@ pipeline {
 
         stage('Manage Apps') {
             when {
-                expression  { params.DEPLOY_OPTIONS == 'APPS' }
+                expression { params.DEPLOY_OPTIONS == 'APPS' }
             }
             environment {
-                NGINX_NODE = sh(script: "cd dev; terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
-                PYTHON_NODE = sh(script: "cd dev; terraform output  |  grep Pynode | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
+                NGINX_NODE = sh(script: "cd dev; terraform output | grep Nginx | awk -F\\= '{print \$2}'", returnStdout: true).trim()
+                PYTHON_NODE = sh(script: "cd dev; terraform output | grep Pynode | awk -F\\= '{print \$2}'", returnStdout: true).trim()
             }
             steps {
                 script {
-                    sshagent (credentials : ['PRIVATE_SSH_KEY']) {
+                    sshagent(credentials: ['PRIVATE_SSH_KEY']) {
                         sh """
                         env
                         cd dev
@@ -104,42 +104,34 @@ pipeline {
                 }
             }
         }
-        stage ('Notification') {
-            steps {
-                // Your build steps here
-                echo 'This is the Build Outcome'
-            }
-                  
-            post {
-                success {
-                    script {
-                        withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
-
-                        sh """
-                          curl -X POST \
-                          -H 'Authorization: Bearer ${SLACK_ID}' \
-                          -H 'Content-Type: application/json' \
-                          --data '{"channel": "devops-masterclass-2024","text" : "This Jenkins Alert indicates pipeline BUILD SUCCESS"}'  \
-                          https://slack.com//api/chat.postMessage 
-                        """
-                    }
+    }
+    
+    post {
+        success {
+            script {
+                withCredentials([string(credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
+                    sh """
+                    curl -X POST \
+                    -H 'Authorization: Bearer ${SLACK_ID}' \
+                    -H 'Content-Type: application/json' \
+                    --data '{"channel": "devops-masterclass-2024", "text": "This Jenkins Alert indicates pipeline BUILD SUCCESS"}' \
+                    https://slack.com/api/chat.postMessage
+                    """
                 }
             }
-                failure  {
-                    script {
-                        withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
-
-                        sh """
-                          curl -X POST \
-                          -H 'Authorization: Bearer ${SLACK_ID}' \
-                          -H 'Content-Type: application/json' \
-                          --data '{"channel": "devops-masterclass-2024","text" : "This Jenkins Alert indicates pipeline BUILD FAILURE"}'  \
-                          https://slack.com//api/chat.postMessage 
-                        """
-                    }
-                }       
+        }
+        failure {
+            script {
+                withCredentials([string(credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
+                    sh """
+                    curl -X POST \
+                    -H 'Authorization: Bearer ${SLACK_ID}' \
+                    -H 'Content-Type: application/json' \
+                    --data '{"channel": "devops-masterclass-2024", "text": "This Jenkins Alert indicates pipeline BUILD FAILURE"}' \
+                    https://slack.com/api/chat.postMessage
+                    """
+                }
             }
         }
     }
-}
 }
