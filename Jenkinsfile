@@ -138,7 +138,7 @@ pipeline {
 } */
 
 stage ('Notification') {
-                    
+        steps {            
         post {
         success {
             script {
@@ -169,6 +169,7 @@ stage ('Notification') {
                     }
                 }       
            }
+            }
         }
     }
 }
