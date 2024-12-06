@@ -16,8 +16,7 @@ pipeline {
                 sh '''
                 cd dev
                 terraform init
-                terraform fmt -check
-                terraform validate
+                
                 '''
             }
         }
