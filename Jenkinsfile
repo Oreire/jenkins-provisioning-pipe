@@ -20,30 +20,30 @@ pipeline {
             }
         }
 
-        /* stage('Terraform Format ') {
-            when {
+        stage('Terraform Format ') {
+           /*  when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
-            }
+            } */
             steps {
                 sh '''
                 cd dev
                 terraform fmt -check
-                terraform
+                
                 '''
             }
         }
-
         stage('Terraform Validate ') {
-            when {
+           /*  when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
-            }
+            } */
             steps {
                 sh '''
                 cd dev
+                
                 terraform validate
                 '''
             }
-        } */
+        }
 
         stage('Terraform Plan ') {
             when {
