@@ -82,7 +82,7 @@ pipeline {
             }
         }
 
-        /* stage('Manage Apps') {
+        stage('Manage Apps') {
             when {
                 expression  { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL' }
             }
@@ -105,7 +105,7 @@ pipeline {
             }
         }
     }
-} */
+}
         stage ('Notification') {
             steps {
                 // Your build steps here
