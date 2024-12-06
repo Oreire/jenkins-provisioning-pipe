@@ -5,7 +5,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials ('AWS_SECRET_ACCESS_KEY')
         }
         parameters {
-        choice (choices: "ALL\nINFRA\nAPPS", description: " This is to manage pipeline steps", name: "DEPLOY_OPTIONS")
+        choice (choices: "ALL\nINFRA\nAPPS\nDEL", description: " This is to manage pipeline steps", name: "DEPLOY_OPTIONS")
     }
     stages {
         stage('Initialise terraform') {
