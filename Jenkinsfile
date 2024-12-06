@@ -60,6 +60,10 @@ pipeline {
             when {
                 expression { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
             }
+            environment { 
+                NGINX_NODE = sh(script: "cd dev; terraform apply -var 'node1=Nginx' -var 'node2=Pynode' -auto-approve && terraform output -json | jq -r '.Nginx.value'", returnStdout: true).trim() 
+                PYTHON_NODE = sh(script: "cd dev; terraform apply -var 'node1=Nginx' -var 'node2=Pynode' -auto-approve && terraform output -json | jq -r '.Pynode.value'", returnStdout: true).trim()
+            }
             steps {
                 sh '''
                 cd dev
