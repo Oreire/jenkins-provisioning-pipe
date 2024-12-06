@@ -138,11 +138,11 @@ pipeline {
 
 } */
 
-/* stage ('Notification') {
-        steps {            
-        post {
-        success {
-            script {
+stage ('Notification') {
+                   
+    post {
+            success {
+                script {
                     withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
 
                         sh """
@@ -156,8 +156,8 @@ pipeline {
                 }
         } 
        
-       failure  {
-            script {
+            failure  {
+                script {
                     withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
 
                         sh """
@@ -172,7 +172,7 @@ pipeline {
            }
             }
         }
-    } */
+    }
 }
 
-}
+        
