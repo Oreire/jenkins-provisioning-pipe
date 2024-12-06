@@ -20,7 +20,6 @@ pipeline {
             }
         }
 
-        Uncomment these stages if needed
         stage('Terraform Format') {
             when {
                 expression { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
