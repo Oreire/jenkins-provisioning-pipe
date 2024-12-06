@@ -104,8 +104,6 @@ pipeline {
                 }
             }
         }
-    }
-}
         stage ('Notification') {
             steps {
                 // Your build steps here
