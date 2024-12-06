@@ -21,10 +21,10 @@ pipeline {
             }
         }
 
-        stage('Terraform Format and Validate ') {
-            when {
+        stage('Terraform Format ') {
+           /*  when {
                 expression  { params.DEPLOY_OPTIONS == 'FMTVAL' }
-            } 
+            } */ 
             steps {
                 sh '''
                 cd dev
