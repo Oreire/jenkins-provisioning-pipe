@@ -43,7 +43,7 @@ pipeline {
                 '''
             }
         }
-            
+
         stage('Terraform Plan ') {
             when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
@@ -104,7 +104,7 @@ pipeline {
         }
     }
 } */
-      stage ('Notification') {
+      /* stage ('Notification') {
             steps {
                 script {
                     withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
@@ -135,4 +135,41 @@ pipeline {
         }
     }
 
+} */
+
+stage ('Notification') {
+                    
+        post {
+        success {
+            script {
+                    withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
+
+                        sh """
+                          curl -X POST \
+                          -H 'Authorization: Bearer ${SLACK_ID}' \
+                          -H 'Content-Type: application/json' \
+                          --data '{"channel": "devops-masterclass-2024","text" : "This Jenkins Alert indicates pipeline BUILD SUCCESS"}'  \
+                          https://slack.com//api/chat.postMessage 
+                        """
+                    }
+                }
+        } 
+       
+       failure  {
+            script {
+                    withCredentials ([string (credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
+
+                        sh """
+                          curl -X POST \
+                          -H 'Authorization: Bearer ${SLACK_ID}' \
+                          -H 'Content-Type: application/json' \
+                          --data '{"channel": "devops-masterclass-2024","text" : "This Jenkins Alert indicates pipeline BUILD FAILURE"}'  \
+                          https://slack.com//api/chat.postMessage 
+                        """
+                    }
+                }       
+           }
+        }
+    }
 }
+
