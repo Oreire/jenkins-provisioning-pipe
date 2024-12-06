@@ -21,9 +21,9 @@ pipeline {
         }
 
         stage('Terraform Format ') {
-           /*  when {
+            when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
-            } */
+            } 
             steps {
                 sh '''
                 cd dev
@@ -33,9 +33,9 @@ pipeline {
             }
         }
         stage('Terraform Validate ') {
-           /*  when {
+            when {
                 expression  { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
-            } */
+            } 
             steps {
                 sh '''
                 cd dev
