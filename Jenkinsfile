@@ -27,7 +27,7 @@ pipeline {
             steps {
                 sh '''
                 cd dev
-                terraform fmt -check'
+                terraform fmt -check
                 '''
             }
         }
