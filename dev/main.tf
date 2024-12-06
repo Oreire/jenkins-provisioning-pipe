@@ -37,6 +37,12 @@ resource "aws_security_group" "ssh_sg" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+  }
+  ingress {
+    from_port   = 8080
+    to_port     = 8080
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
 
   }
 }
@@ -73,7 +79,7 @@ resource "aws_security_group" "tls_sg" {
 resource "aws_instance" "node1" {
   ami                    = "ami-0b45ae66668865cd6" #var.ami_id
   instance_type          = "t2.micro"              #var.instance_type_id
-  key_name               = "NewAxeCred"            #var.key_name
+  key_name               = "JENKINS-KEY"            #var.key_name
   vpc_security_group_ids = [aws_security_group.ssh_sg.id]
   tags = {
     Name = var.node1
@@ -85,7 +91,7 @@ resource "aws_instance" "node1" {
 resource "aws_instance" "node2" {
   ami                    = "ami-0b45ae66668865cd6" #var.ami_id
   instance_type          = "t2.micro"              #var.instance_type_id
-  key_name               = "NewAxeCred"            #var.key_name
+  key_name               = "JENKINS-KEY"            #var.key_name
   vpc_security_group_ids = [aws_security_group.tls_sg.id]
   tags = {
     Name = var.node2
