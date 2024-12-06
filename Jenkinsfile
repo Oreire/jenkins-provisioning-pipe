@@ -58,6 +58,19 @@ pipeline {
                 '''
             }
         }
+
+        stage('Terraform Destroy ') {
+            when {
+                expression  { params.DEPLOY_OPTIONS == 'DEL' }
+            }
+            steps {
+                sh '''
+                cd dev
+                terraform destroy -var 'node1=Nginx' -var 'node2=Pynode' -auto-approve
+                '''
+            }
+        }
+
         stage('Manage Apps') {
             when {
                 expression  { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL' }
@@ -113,25 +126,3 @@ pipeline {
         }
     }
 } */
-        /* stage('Install Python') {
-            environment {
-                PYTHON_NODE = sh(script: "cd dev; terraform output  |  grep Pynode | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
-            }
-            steps {
-                script {
-                    sshagent (credentials : ['PRIVATE_SSH_KEY']) {
-                        sh """
-                        env
-                        cd dev
-                        ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'sudo yum update -y && sudo yum install python3 -y'
-                        scp -o StrictHostKeyChecking=no ../hello.py ec2-user@${PYTHON_NODE}:/tmp/hello.py
-                                               
-                        """
-                    }
-                }
-            }
-        } */
-
-
-
-    
