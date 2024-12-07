@@ -58,7 +58,7 @@ pipeline {
             }
         }
 
-        /* stage('Terraform Destroy') {
+        stage('Terraform Destroy') {
             when {
                 expression { params.DEPLOY_OPTIONS == 'DEL' }
             }
@@ -68,15 +68,15 @@ pipeline {
                 terraform destroy -var 'node1=Nginx' -var 'node2=Pynode' -auto-approve
                 '''
             }
-        } */
+        }
 
         stage('Manage Apps') {
             when {
-                expression { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL'}
+                expression { params.DEPLOY_OPTIONS == 'APPS'}
             }
             environment {
-                NGINX_NODE = sh(script: "cd dev; terraform output  |  grep nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
-                PYTHON_NODE = sh(script: "cd dev; terraform output  |  grep python | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
+                NGINX_NODE = sh(script: "cd dev; terraform output  |  grep Nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
+                PYTHON_NODE = sh(script: "cd dev; terraform output  |  grep pynode | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
             }
             steps {
                 script {
