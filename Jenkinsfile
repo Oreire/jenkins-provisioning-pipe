@@ -28,6 +28,7 @@ pipeline {
                 sh '''
                 cd dev
                 terraform fmt -recursive
+                terraform fmt -check
                 terraform validate
                 '''
             }
