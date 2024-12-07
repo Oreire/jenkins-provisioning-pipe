@@ -58,7 +58,7 @@ pipeline {
             }
         }
 
-        stage('Terraform Destroy') {
+        /* stage('Terraform Destroy') {
             when {
                 expression { params.DEPLOY_OPTIONS == 'DEL' }
             }
@@ -68,7 +68,7 @@ pipeline {
                 terraform destroy -var 'node1=Nginx' -var 'node2=Pynode' -auto-approve
                 '''
             }
-        }
+        } */
 
         stage('Manage Apps') {
             when {
