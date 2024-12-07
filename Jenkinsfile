@@ -79,10 +79,9 @@ pipeline {
                     sshagent(credentials: ['PRIVATE_SSH_KEY']) {
                         sh """ 
                         cd dev
-                        ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'sudo yum update -y && sudo yum install python3 -y'
-                        pip install pytest
-                        pytest hello.py 
-                      ''' 
+                        ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'sudo yum update -y && pip3 install pytest -y  && pytest hello.py'
+                        
+                     ''' 
             }
         }
 
