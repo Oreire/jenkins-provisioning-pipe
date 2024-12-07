@@ -99,7 +99,7 @@ pipeline {
                 // SSH into NGINX Node and install NGINX
                 sh """
                 cd dev
-                ssh -t StrictHostKeyChecking=no ec2-user@${NGINX_NODE} <<EOF
+                ssh -o StrictHostKeyChecking=no -t ec2-user@${NGINX_NODE} <<EOF
                     sudo yum update -y
                     sudo yum install -y git nginx
                     sudo systemctl start nginx
