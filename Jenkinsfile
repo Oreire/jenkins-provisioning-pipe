@@ -102,13 +102,15 @@ pipeline {
                 }
             }
         }
-    }
-        stage ('Notification') { 
+
+        stage('Notification') { 
             steps { 
-            // Your build steps here 
-            echo 'This is the Build Outcome' 
+                echo 'This is the Build Outcome' 
+            }
         }
-        post {
+    }
+
+    post {
         success {
             script {
                 withCredentials([string(credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
@@ -136,5 +138,4 @@ pipeline {
             }
         }
     }
-}
 }
