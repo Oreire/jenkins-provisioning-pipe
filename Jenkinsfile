@@ -73,7 +73,8 @@ pipeline {
         stage('Run Tests') { 
             steps { 
                 sh ''' 
-                cd dev 
+                cd dev
+                pip install pytest
                 pytest hello.py 
                 ''' 
             }
