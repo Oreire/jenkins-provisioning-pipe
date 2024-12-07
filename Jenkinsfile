@@ -71,12 +71,18 @@ pipeline {
         }
 
         stage('Run Tests') { 
-            steps { 
-                sh ''' 
-                cd dev
-                pip install pytest
-                pytest hello.py 
-                ''' 
+            environment {
+                PYTHON_NODE = sh(script: "cd dev; terraform output | grep Pynode | awk -F\\= '{print \$2}'", returnStdout: true).trim()
+            }
+            steps {
+                script {
+                    sshagent(credentials: ['PRIVATE_SSH_KEY']) {
+                        sh """ 
+                        cd dev
+                        ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'sudo yum update -y && sudo yum install python3 -y'
+                        pip install pytest
+                        pytest hello.py 
+                      ''' 
             }
         }
 
