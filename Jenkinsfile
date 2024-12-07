@@ -98,7 +98,6 @@ pipeline {
             sshagent(credentials: ['PRIVATE_SSH_KEY']) {
                 // SSH into NGINX Node and install NGINX
                 sh """
-                set -e  # Exit on error
                 cd dev
                 ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} <<EOF
                     sudo yum update -y
