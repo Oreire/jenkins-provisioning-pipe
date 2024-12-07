@@ -21,9 +21,9 @@ pipeline {
         }
 
        stage('Terraform Format and Validate') {
-            when {
-                expression { params.DEPLOY_OPTIONS == 'FMTVAL' }
-            }
+            steps {
+                script {
+                    echo "${params.DEPLOY_OPTIONS}"
             steps {
                 sh '''
                 cd dev
