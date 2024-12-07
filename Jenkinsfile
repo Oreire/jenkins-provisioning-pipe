@@ -75,8 +75,8 @@ pipeline {
                 expression { params.DEPLOY_OPTIONS == 'APPS' }
             }
             environment {
-                NGINX_NODE = sh(script: "cd dev; terraform output Nginx | awk -F\\= '{print \$2}'", returnStdout: true).trim()
-                PYTHON_NODE = sh(script: "cd dev; terraform output Pynode | awk -F\\= '{print \$2}'", returnStdout: true).trim()
+                NGINX_NODE = sh(script: "cd dev; terraform output -raw Nginx", returnStdout: true).trim()
+                PYTHON_NODE = sh(script: "cd dev; terraform output -raw Pynode", returnStdout: true).trim()
             }
             steps {
                 script {
@@ -92,20 +92,21 @@ pipeline {
                 }
             }
         }
-    }       
 
-    /*  stage('Run Tests') { 
-          steps {
-                 sshagent(credentials: ['PRIVATE_SSH_KEY']) {
-                        sh """ 
-                        cd dev
-                        PYTHON_NODE = "terraform output | grep Pynode | awk -F\\= '{print \$2}'"
-                        ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'cd /tmp/ ; sudo yum python3-pip -y ; pip install pytest ; pytest hello.py'
-                        
-                     ''' 
+        /* Uncomment and fix the following section if needed
+        stage('Run Tests') {
+            steps {
+                sshagent(credentials: ['PRIVATE_SSH_KEY']) {
+                    sh """
+                    cd dev
+                    PYTHON_NODE=$(terraform output -raw Pynode)
+                    ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'cd /tmp/ ; sudo yum install python3-pip -y ; pip3 install pytest ; pytest hello.py'
+                    """
                 }
             }
-    } */
+        }
+        */
+
         stage('Notification') { 
             steps { 
                 echo 'This stage provides the slack notification for the outcome of the pipeline Build' 
@@ -141,4 +142,4 @@ pipeline {
             }
         }
     }
-
+}
