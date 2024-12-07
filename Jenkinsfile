@@ -20,18 +20,6 @@ pipeline {
             }
         }
 
-        stage('Terraform Format') {
-            /* when {
-                expression { params.DEPLOY_OPTIONS == 'FMTVAL' }
-            } */
-            steps {
-                sh '''
-                cd dev
-                terraform fmt -check
-                '''
-            }
-        }
-        
         stage('Terraform Validate') { 
             steps { 
                 sh ''' 
