@@ -33,15 +33,6 @@ pipeline {
             }
         }
         
-        /* stage('Terraform Validate') { 
-            steps { 
-                sh ''' 
-                cd dev 
-                terraform validate 
-                ''' 
-            }
-        } */
-
         stage('Terraform Plan') {
             when {
                 expression { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
@@ -103,7 +94,7 @@ pipeline {
 
         stage('Notification') { 
             steps { 
-                echo 'This is the Build Outcome' 
+                echo 'This statge provides the slack notification for the outcome of the pipeline Build' 
             }
         }
     }
