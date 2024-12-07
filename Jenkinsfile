@@ -70,6 +70,14 @@ pipeline {
             }
         }
 
+        stage('Run Tests') { 
+            steps { 
+                sh ''' 
+                cd dev 
+                pytest hello.py 
+                ''' 
+            }
+
         stage('Manage Apps') {
             when {
                 expression { params.DEPLOY_OPTIONS == 'APPS' }
