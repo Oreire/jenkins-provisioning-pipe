@@ -124,10 +124,10 @@ pipeline {
             // Your build steps here 
         echo 'This is the Build Outcome' 
         }
-    post {
-        success {
-            script {
-                withCredentials([string(credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
+        post {
+            success {
+                script {
+                     withCredentials([string(credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
                     sh """
                     curl -X POST \
                     -H 'Authorization: Bearer ${SLACK_ID}' \
@@ -138,9 +138,9 @@ pipeline {
                 }
             }
         }
-        failure {
-            script {
-                withCredentials([string(credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
+            failure {
+                script {
+                    withCredentials([string(credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
                     sh """
                     curl -X POST \
                     -H 'Authorization: Bearer ${SLACK_ID}' \
