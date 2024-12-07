@@ -20,9 +20,9 @@ pipeline {
             }
         }
 
-       /*  stage('Terraform Format and Validate') {
+       stage('Terraform Format and Validate') {
             when {
-                expression { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' || params.DEPLOY_OPTIONS == 'FMTVAL' }
+                expression { params.DEPLOY_OPTIONS == 'FMTVAL' }
             }
             steps {
                 sh '''
@@ -31,8 +31,7 @@ pipeline {
                 terraform validate
                 '''
             }
-        } */
-              
+        }               
         stage('Terraform Plan') {
             when {
                 expression { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
