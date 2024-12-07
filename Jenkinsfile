@@ -22,7 +22,7 @@ pipeline {
 
         stage('Terraform Format and Validate') {
             when {
-                expression { params.DEPLOY_OPTIONS == 'FMTVAL' || params.DEPLOY_OPTIONS == 'ALL'}
+                expression { params.DEPLOY_OPTIONS == 'FMTVAL' || params.DEPLOY_OPTIONS == 'ALL' }
             }
             steps {
                 sh '''
@@ -77,6 +77,7 @@ pipeline {
                 pytest hello.py 
                 ''' 
             }
+        }
 
         stage('Manage Apps') {
             when {
@@ -103,7 +104,7 @@ pipeline {
 
         stage('Notification') { 
             steps { 
-                echo 'This statge provides the slack notification for the outcome of the pipeline Build' 
+                echo 'This stage provides the slack notification for the outcome of the pipeline Build' 
             }
         }
     }
@@ -136,5 +137,4 @@ pipeline {
             }
         }
     }
-}
 }
