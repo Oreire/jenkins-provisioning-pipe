@@ -1,4 +1,4 @@
-output "Nginx" {
+output "Nginx_dns" {
   value = aws_instance.node1.public_dns
 }
 
@@ -6,7 +6,7 @@ output "Nginx" {
 #   value = aws_instance.node1.public_ip
 # }
 
-output "Pynode" {
+output "Pynode_dns" {
   value = aws_instance.node2.public_dns
 }
 
