@@ -70,7 +70,7 @@ pipeline {
             }
         }
 
-        /* stage('Manage Apps') {
+        stage('Manage Apps') {
             when {
                 expression { params.DEPLOY_OPTIONS == 'APPS' }
             }
@@ -88,39 +88,12 @@ pipeline {
                         ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'sudo yum update -y && sudo yum install python3 -y'
                         scp -r -o StrictHostKeyChecking=no ../hello.py ec2-user@${PYTHON_NODE}:/tmp/hello.py
                         """
-                    }
-                }
-            }
-        } */
-
-        stage('Manage Apps') {
-    when {
-        expression { params.DEPLOY_OPTIONS == 'APPS' }
-    }
-    environment {
-        NGINX_NODE = sh(script: "cd dev; terraform output  |  grep nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
-        PYTHON_NODE = sh(script: "cd dev; terraform output  |  grep python | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
-    }
-    steps {
-        script {
-            sshagent(credentials: ['PRIVATE_SSH_KEY']) {
-                sh """
-                env
-                cd dev
-                # Install Nginx on the NGINX_NODE
-                ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} 'sudo yum install nginx -y && sudo service nginx start'
-                # Install Python on the PYTHON_NODE
-                ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'sudo yum update -y && sudo yum install python3 -y'
-                # Copy the hello.py script to the PYTHON_NODE
-                scp -r -o StrictHostKeyChecking=no ../hello.py ec2-user@${PYTHON_NODE}:/tmp/hello.py
-                """
             }
         }
     }
-}
+} 
 
-
-        /* Uncomment and fix the following section if needed
+    /* Uncomment and fix the following section if needed
         stage('Run Tests') {
             steps {
                 sshagent(credentials: ['PRIVATE_SSH_KEY']) {
