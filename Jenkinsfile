@@ -72,7 +72,7 @@ pipeline {
 
         stage('Manage Apps') {
             when {
-                expression { params.DEPLOY_OPTIONS == 'APPS' }
+                expression { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL'}
             }
             environment {
                 NGINX_NODE = sh(script: "cd dev; terraform output  |  grep nginx | awk -F\\=  '{print \$2}'",returnStdout: true).trim()
