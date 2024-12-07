@@ -74,10 +74,10 @@ pipeline {
             when {
                 expression { params.DEPLOY_OPTIONS == 'APPS' }
             }
-            /* environment {
+            environment {
                 NGINX_NODE = sh(script: "cd dev; terraform output -raw Nginx", returnStdout: true).trim()
                 PYTHON_NODE = sh(script: "cd dev; terraform output -raw Pynode", returnStdout: true).trim()
-            } */
+            }
             steps {
                 script {
                     sshagent(credentials: ['PRIVATE_SSH_KEY']) {
