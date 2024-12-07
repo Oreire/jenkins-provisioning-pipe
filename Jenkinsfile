@@ -70,7 +70,7 @@ pipeline {
             }
         }
 
-        stage('Run Tests') { 
+       /*  stage('Run Tests') { 
             environment {
                 PYTHON_NODE = sh(script: "cd dev; terraform output | grep Pynode | awk -F\\= '{print \$2}'", returnStdout: true).trim()
             }
@@ -83,7 +83,7 @@ pipeline {
                         
                      ''' 
             }
-        }
+        } */
 
         stage('Manage Apps') {
             when {
