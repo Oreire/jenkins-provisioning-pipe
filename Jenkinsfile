@@ -75,8 +75,10 @@ pipeline {
                 expression { params.DEPLOY_OPTIONS == 'APPS' }
             }
             environment {
-                NGINX_NODE = sh(script: "cd dev; terraform output Nginx | awk -F\\= '{print \$2}'", returnStdout: true).trim()
-                PYTHON_NODE = sh(script: "cd dev; terraform output Pynode | awk -F\\= '{print \$2}'", returnStdout: true).trim()
+                /* NGINX_NODE = sh(script: "cd dev; terraform output Nginx | awk -F\\= '{print \$2}'", returnStdout: true).trim()
+                PYTHON_NODE = sh(script: "cd dev; terraform output Pynode | awk -F\\= '{print \$2}'", returnStdout: true).trim() */
+                NGINX_NODE = "terraform output | grep Nginx | awk -F\\= '{print \$2}'"
+                PYTHON_NODE = "terraform output | grep Pynode | awk -F\\= '{print \$2}'"
             }
             steps {
                 script {
