@@ -118,7 +118,7 @@ pipeline {
                     curl -X POST \
                     -H 'Authorization: Bearer ${SLACK_ID}' \
                     -H 'Content-Type: application/json' \
-                    --data '{"channel": "devops-masterclass-2024", "text": "This Jenkins Alert indicates pipeline BUILD SUCCESS"}' \
+                    --data '{"channel": "devops-masterclass-2024", "text": "This Jenkins Alert indicates Week 10 Project's pipeline BUILD SUCCESS"}' \
                     https://slack.com/api/chat.postMessage
                     """
                 }
@@ -131,7 +131,7 @@ pipeline {
                     curl -X POST \
                     -H 'Authorization: Bearer ${SLACK_ID}' \
                     -H 'Content-Type: application/json' \
-                    --data '{"channel": "devops-masterclass-2024", "text": "This Jenkins Alert indicates pipeline BUILD FAILURE"}' \
+                    --data '{"channel": "devops-masterclass-2024", "text": "This Jenkins Alert indicates Week 10 Project's pipeline BUILD FAILURE, warranting further DEBUGGING"}' \
                     https://slack.com/api/chat.postMessage
                     """
                 }
