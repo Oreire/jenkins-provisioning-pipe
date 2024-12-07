@@ -91,25 +91,24 @@ pipeline {
         }
 
         stage('Manage Apps') {
-            when {
-                expression { params.DEPLOY_OPTIONS == 'APPS' }
-            }
-            steps {
-                script {
-                    sshagent(credentials: ['PRIVATE_SSH_KEY']) {
-                        sh """
-                        env
-                        cd dev
-                        ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} 'sudo yum update -y && sudo yum install git -y && sudo yum install nginx -y && sudo systemctl start nginx && sudo systemctl enable nginx'
-                        /* ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'sudo yum update -y && sudo yum install python3 -y'
-                        scp -o StrictHostKeyChecking=no ../hello.py ec2-user@${PYTHON_NODE}:/tmp/hello.py */
-                        """
-                    }
-                }
+    when {
+        expression { params.DEPLOY_OPTIONS == 'APPS' }
+    }
+    steps {
+        script {
+            sshagent(credentials: ['PRIVATE_SSH_KEY']) {
+                sh """
+                env
+                cd dev
+                ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} 'sudo yum update -y && sudo yum install git -y && sudo yum install nginx -y && sudo systemctl start nginx && sudo systemctl enable nginx'
+                ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'sudo yum update -y && sudo yum install python3 -y'
+                scp -o StrictHostKeyChecking=no ../hello.py ec2-user@${PYTHON_NODE}:/tmp/hello.py
+                """
             }
         }
     }
-    
+}
+   
     /* stage('Run Tests') {
         steps { 
             script { 
