@@ -31,6 +31,7 @@ pipeline {
                 '''
             }
         }
+        
         stage('Terraform Validate') { 
             steps { 
                 sh ''' 
@@ -38,6 +39,7 @@ pipeline {
                 terraform validate 
                 ''' 
             }
+        }
 
         stage('Terraform Plan') {
             when {
