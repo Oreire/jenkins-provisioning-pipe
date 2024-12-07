@@ -5,7 +5,7 @@ pipeline {
         AWS_SECRET_ACCESS_KEY = credentials('AWS_SECRET_ACCESS_KEY')
     }
     parameters {
-        choice(choices: "ALL\nINFRA\nAPPS\nDEL\nFMTVAL", description: "This is to manage pipeline steps", name: "DEPLOY_OPTIONS")
+        choice(choices: "ALL\nINFRA\nAPPS\nDEL\nFMTVAL", description: "This enforces Separation of Concerns SoC to manage pipeline steps", name: "DEPLOY_OPTIONS")
     }
     stages {
         stage('Initialise terraform') {
@@ -21,10 +21,10 @@ pipeline {
         }
 
         stage('Terraform Format and Validate') {
+            when {
+                expression { params.DEPLOY_OPTIONS == 'FMTVAL' }
+            }
             steps {
-                script {
-                    echo "${params.DEPLOY_OPTIONS}"
-                }
                 sh '''
                 cd dev
                 terraform fmt -check
