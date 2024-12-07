@@ -119,6 +119,11 @@ pipeline {
                 pytest hello.py 
                 ''' 
     } */
+    stage ('Notification') { 
+        steps { 
+            // Your build steps here 
+        echo 'This is the Build Outcome' 
+        }
     post {
         success {
             script {
