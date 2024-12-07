@@ -20,10 +20,10 @@ pipeline {
             }
         }
 
-        stage('Terraform Format and Validate') {
-            when {
-                expression { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' || params.DEPLOY_OPTIONS == 'FMTVAL' }
-            }
+       stage('Terraform Format and Validate') {
+            steps {
+                script {
+                    echo "${params.DEPLOY_OPTIONS}"
             steps {
                 sh '''
                 cd dev
@@ -31,8 +31,7 @@ pipeline {
                 terraform validate
                 '''
             }
-        }
-
+        }               
         stage('Terraform Plan') {
             when {
                 expression { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
@@ -107,7 +106,7 @@ pipeline {
                     curl -X POST \
                     -H 'Authorization: Bearer ${SLACK_ID}' \
                     -H 'Content-Type: application/json' \
-                    --data '{"channel": "devops-masterclass-2024", "text": "This Jenkins Alert indicates pipeline BUILD SUCCESS"}' \
+                    --data '{"channel": "devops-masterclass-2024", "text": "This Jenkins Alert for pipeline BUILD SUCCESS for Week 10 Project"}' \
                     https://slack.com/api/chat.postMessage
                     """
                 }
@@ -120,7 +119,7 @@ pipeline {
                     curl -X POST \
                     -H 'Authorization: Bearer ${SLACK_ID}' \
                     -H 'Content-Type: application/json' \
-                    --data '{"channel": "devops-masterclass-2024", "text": "This Jenkins Alert indicates pipeline BUILD FAILURE"}' \
+                    --data '{"channel": "devops-masterclass-2024", "text": "This Jenkins Alert indicates pipeline BUILD FAILURE for Week 10 Project"}' \
                     https://slack.com/api/chat.postMessage
                     """
                 }
