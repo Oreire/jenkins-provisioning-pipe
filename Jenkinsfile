@@ -20,8 +20,7 @@ pipeline {
             }
         }
 
-        /* Uncomment these stages if needed
-        stage('Terraform Format') {
+        /* stage('Terraform Format') {
             when {
                 expression { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
             }
@@ -43,9 +42,8 @@ pipeline {
                 terraform validate
                 '''
             }
-        }
-        */
-
+        } */
+       
         stage('Terraform Plan') {
             when {
                 expression { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
@@ -62,19 +60,11 @@ pipeline {
             when {
                 expression { params.DEPLOY_OPTIONS == 'INFRA' || params.DEPLOY_OPTIONS == 'ALL' }
             }
-            environment {
-                NGINX_NODE = sh(script: "cd dev; terraform output | grep Nginx | awk -F\\= '{print \$2}'", returnStdout: true).trim()
-                /* PYTHON_NODE = sh(script: "cd dev; terraform output | grep Pynode | awk -F\\= '{print \$2}'", returnStdout: true).trim() */
-            }
             steps {
                 sh '''
                 cd dev
                 terraform apply -var 'node1=Nginx' -var 'node2=Pynode' -auto-approve
                 '''
-                /* script {
-                    echo "NGINX_NODE: ${NGINX_NODE}"
-                    echo "PYTHON_NODE: ${PYTHON_NODE}"
-                } */
             }
         }
 
@@ -91,43 +81,37 @@ pipeline {
         }
 
         stage('Manage Apps') {
-    when {
-        expression { params.DEPLOY_OPTIONS == 'APPS' }
-    }
-    steps {
-        script {
-            sshagent(credentials: ['PRIVATE_SSH_KEY']) {
-                sh """
-                env
-                cd dev
-                ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} 'sudo yum update -y && sudo yum install git -y && sudo yum install nginx -y && sudo systemctl start nginx && sudo systemctl enable nginx'
-                ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'sudo yum update -y && sudo yum install python3 -y'
-                scp -o StrictHostKeyChecking=no ../hello.py ec2-user@${PYTHON_NODE}:/tmp/hello.py
-                """
+            when {
+                expression { params.DEPLOY_OPTIONS == 'APPS' }
+            }
+            environment {
+                NGINX_NODE = sh(script: "cd dev; terraform output | grep Nginx | awk -F\\= '{print \$2}'", returnStdout: true).trim()
+                PYTHON_NODE = sh(script: "cd dev; terraform output | grep Pynode | awk -F\\= '{print \$2}'", returnStdout: true).trim()
+            }
+            steps {
+                script {
+                    sshagent(credentials: ['PRIVATE_SSH_KEY']) {
+                        sh """
+                        env
+                        cd dev
+                        ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} 'sudo yum update -y && sudo yum install git -y && sudo yum install nginx -y && sudo systemctl start nginx && sudo systemctl enable nginx'
+                        ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'sudo yum update -y && sudo yum install python3 -y'
+                        scp -o StrictHostKeyChecking=no ../hello.py ec2-user@${PYTHON_NODE}:/tmp/hello.py
+                        """
+                    }
+                }
             }
         }
     }
-}
-   
-    /* stage('Run Tests') {
-        steps { 
-            script { 
-                echo 'Running tests...' 
-                } 
-                sh ''' 
-                cd dev 
-                pytest hello.py 
-                ''' 
-    } */
-    stage ('Notification') { 
-        steps { 
+        stage ('Notification') { 
+            steps { 
             // Your build steps here 
-        echo 'This is the Build Outcome' 
+            echo 'This is the Build Outcome' 
         }
         post {
-            success {
-                script {
-                     withCredentials([string(credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
+        success {
+            script {
+                withCredentials([string(credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
                     sh """
                     curl -X POST \
                     -H 'Authorization: Bearer ${SLACK_ID}' \
@@ -138,14 +122,14 @@ pipeline {
                 }
             }
         }
-            failure {
-                script {
-                    withCredentials([string(credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
+        failure {
+            script {
+                withCredentials([string(credentialsId: 'SLACK_TOKEN', variable: 'SLACK_ID')]) {
                     sh """
                     curl -X POST \
                     -H 'Authorization: Bearer ${SLACK_ID}' \
                     -H 'Content-Type: application/json' \
-                    --data '{"channel": "devops-masterclass-2024", "text": "This Jenkins Alert indicates pipeline BUILD FAILURE, which requires further DEBUGGING"}' \
+                    --data '{"channel": "devops-masterclass-2024", "text": "This Jenkins Alert indicates pipeline BUILD FAILURE"}' \
                     https://slack.com/api/chat.postMessage
                     """
                 }
@@ -153,3 +137,15 @@ pipeline {
         }
     }
 }
+
+
+/* stage('Run Tests') {
+        steps { 
+            script { 
+                echo 'Running tests...' 
+                } 
+                sh ''' 
+                cd dev 
+                pytest hello.py 
+                ''' 
+    } */
