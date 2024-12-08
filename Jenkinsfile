@@ -103,7 +103,7 @@ pipeline {
     }
     environment {
         NGINX_NODE = sh(script: "cd dev; terraform output | grep Nginx_dns | awk -F= '{print \$2}'", returnStdout: true).trim()
-        /* PYTHON_NODE = sh(script: "cd dev; terraform output | grep Pynode_dns | awk -F= '{print \$2}'", returnStdout: true).trim() */
+        PYTHON_NODE = sh(script: "cd dev; terraform output | grep Pynode_dns | awk -F= '{print \$2}'", returnStdout: true).trim()
     }
     steps {
         script {
@@ -113,15 +113,15 @@ pipeline {
                 cd dev
                 ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
                 sudo yum install nginx -y
-                sudo sed -i 's/listen 80;/listen 8080;/' /etc/nginx/nginx.conf
+                /* sudo sed -i 's/listen 80;/listen 8080;/' /etc/nginx/nginx.conf */
                 sudo systemctl start nginx
                 sudo systemctl enable nginx 
                 sudo systemctl restart nginx '
                  
-                /* ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} '
+                ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} '
                 sudo yum update -y
                 sudo yum install python3 -y '
-                scp -o StrictHostKeyChecking=no ../hello.py ec2-user@${PYTHON_NODE}:/tmp/hello.py */
+                scp -o StrictHostKeyChecking=no ../hello.py ec2-user@${PYTHON_NODE}:/tmp/hello.py
 
                 """
             }
