@@ -100,8 +100,8 @@ pipeline {
         }
     }
 }
-        stage('Modify Nginx Port') {
-            when {
+    stage('Modify Nginx Port') {
+    when {
         expression { params.DEPLOY_OPTIONS == 'APPS' }
     }
     environment {
@@ -109,7 +109,6 @@ pipeline {
         NGINX_NODE = sh(script: "cd dev; terraform output | grep Nginx_dns | awk -F= '{print \$2}'", returnStdout: true).trim()
         NGINX_CONFIG_PATH = '/etc/nginx/nginx.conf'
     }
-    
     steps {
         script {
             sshagent(credentials: ['PRIVATE_SSH_KEY']) {
@@ -118,17 +117,17 @@ pipeline {
 
                 // Run the SSH command to change the Nginx config and restart the service
                 sh """
-                    ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
+                    ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} << EOF
                         sudo sed -i 's/listen 80;/listen 8080;/' ${NGINX_CONFIG_PATH}
-
                         sudo systemctl restart nginx
-                        echo "Nginx is now listening on port 8080." '
-                    
+                        echo "Nginx is now listening on port 8080."
+                    EOF
                 """
             }
         }
     }
 }
+
 
 
     /* Uncomment and fix the following section if needed
