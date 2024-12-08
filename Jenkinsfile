@@ -121,17 +121,14 @@ pipeline {
                         sudo sed -i 's/listen 80;/listen 8080;/' ${NGINX_CONFIG_PATH}
                         sudo systemctl restart nginx
                         echo "Nginx is now listening on port 8080."
-                EOF
+EOF
                 """
             }
         }
     }
 }
 
-
-
-
-    /* Uncomment and fix the following section if needed
+/* Uncomment and fix the following section if needed
         stage('Run Tests') {
             steps {
                 sshagent(credentials: ['PRIVATE_SSH_KEY']) {
