@@ -100,7 +100,7 @@ pipeline {
         }
     }
 }
-        /* stage('Modify Nginx Port') {
+        stage('Modify Nginx Port') {
             when {
         expression { params.DEPLOY_OPTIONS == 'APPS' }
     }
@@ -128,7 +128,7 @@ pipeline {
             }
         }
     }
-} */
+}
 
 
     /* Uncomment and fix the following section if needed
