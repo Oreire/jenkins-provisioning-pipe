@@ -84,14 +84,14 @@ pipeline {
                         sh """
                         env
                         cd dev
-                        ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} << EOF
+                        ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
                         sudo yum install nginx -y
                         sudo systemctl start nginx
                         sudo systemctl enable nginx
                         sudo sed -i 's/listen 80;/listen 8080;/' /etc/nginx/nginx.conf
                         sudo systemctl restart nginx
-                    EOF
-                            
+                    '
+                      
                     ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'sudo yum update -y && sudo yum install python3 -y'
                     scp -r -o StrictHostKeyChecking=no ../hello.py ec2-user@${PYTHON_NODE}:/tmp/hello.py
                         """
