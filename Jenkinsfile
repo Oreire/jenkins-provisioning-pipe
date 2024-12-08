@@ -128,6 +128,9 @@ pipeline {
     }
 }
         stage('Modify Nginx Port') {
+            when {
+        expression { params.DEPLOY_OPTIONS == 'APPS' }
+    }
     environment {
         // Fetch Nginx node from Terraform output
         NGINX_NODE = sh(script: "cd dev; terraform output | grep Nginx_dns | awk -F= '{print \$2}'", returnStdout: true).trim()
