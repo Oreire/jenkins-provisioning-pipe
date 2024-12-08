@@ -115,7 +115,8 @@ pipeline {
                   sudo yum install nginx -y
                   sudo sed -i 's/listen 80;/listen 8080;/' /etc/nginx/nginx.conf
                   sudo systemctl start nginx
-                  sudo systemctl enable nginx '
+                  sudo systemctl enable nginx 
+                  sudo systemctl restart nginx '
                  
                   ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} '
                   sudo yum update -y
