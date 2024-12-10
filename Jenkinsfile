@@ -102,7 +102,7 @@ pipeline {
 }
     stage('Modify Nginx Port') {
     when {
-        expression { params.DEPLOY_OPTIONS == 'APPS' }
+        expression { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL' }
     }
     environment {
         // Fetch Nginx node from Terraform output
