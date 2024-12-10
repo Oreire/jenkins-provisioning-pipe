@@ -138,7 +138,6 @@ pipeline {
         sshagent(credentials: ['PRIVATE_SSH_KEY']) {
             sh """
                 cd dev
-                /* PYTHON_NODE=\$(terraform output -raw Pynode) */
                 ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} '
                     cd /tmp/
                     sudo yum install python3-pip -y
