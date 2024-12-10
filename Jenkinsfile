@@ -129,30 +129,6 @@ pipeline {
     }
 }
 
-    /* stage('Run Tests') {
-    when {
-        expression { params.DEPLOY_OPTIONS == 'APPS' }
-    }
-    environment {
-        PYTHON_NODE = sh(script: "cd dev; terraform output | grep Pynode_dns | awk -F= '{print \$2}'", returnStdout: true).trim()
-    }
-    steps {
-        echo "Python node value: ${PYTHON_NODE}"
-        sshagent(credentials: ['PRIVATE_SSH_KEY']) {
-            sh '''
-                cd dev
-                ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} '
-                    cd /tmp/
-                    sudo yum update -y  
-                    sudo yum install python3-pip -y  
-                    pip3 install pytest
-                    pytest hello.py
-                    '
-            '''
-        }
-    }
-} */
-
 stage('Run Tests') {
     when {
         expression { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL' }
