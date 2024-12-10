@@ -114,13 +114,11 @@ pipeline {
             sshagent(credentials: ['PRIVATE_SSH_KEY']) {
                 // Modify Nginx config to listen on port 8080
                 echo "Changing Nginx to listen on port 8080..."
+                scp -o StrictHostKeyChecking=no ../NG.conf ec2-user@${NGINX_NODE}:/etc/nginx/nginx.conf
 
                 // Run the SSH command to change the Nginx config file and restart the service
                 sh """
-                    env
-                    cd dev
                     ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
-                        scp -o StrictHostKeyChecking=no ../NG.conf ec2-user@${NGINX_NODE}:/etc/nginx/nginx.conf
                         sudo nginx -t
                         sudo systemctl restart nginx
                         echo "Nginx is now listening on port 8080."
