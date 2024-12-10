@@ -130,6 +130,10 @@ pipeline {
 }
 
     stage('Run Tests') {
+        environment {
+        PYTHON_NODE = sh(script: "cd dev; terraform output | grep Pynode_dns | awk -F= '{print \$2}'", returnStdout: true).trim()
+    }
+    
     steps {
         sshagent(credentials: ['PRIVATE_SSH_KEY']) {
             sh """
