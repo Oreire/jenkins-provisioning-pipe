@@ -164,11 +164,11 @@ stage('Run Tests') {
         sshagent(credentials: ['PRIVATE_SSH_KEY']) {
             sh '''
                 cd dev
-                ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} <<-EOF
+                ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} '
                     sudo yum install python3-pip -y
                     pip3 install pytest
                     pytest 
-                    EOF
+                    '
             '''
         }
     }
