@@ -137,6 +137,7 @@ pipeline {
         PYTHON_NODE = sh(script: "cd dev; terraform output | grep Pynode_dns | awk -F= '{print \$2}'", returnStdout: true).trim()
     }
     steps {
+        echo "Python node value: ${PYTHON_NODE}"
         sshagent(credentials: ['PRIVATE_SSH_KEY']) {
             sh '''
                 cd dev
