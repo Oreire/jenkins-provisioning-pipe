@@ -157,7 +157,7 @@ stage('Run Tests') {
         expression { params.DEPLOY_OPTIONS == 'APPS' }
     }
     environment {
-        PYTHON_NODE = sh(script: "cd dev; terraform output | grep Pynode_dns | awk -F= '{print \$2}'", returnStdout: true).trim()
+        PYTHON_NODE = sh(script: "cd dev; terraform output -raw Pynode_dns", returnStdout: true).trim()
     }
     steps {
         echo "Python node value: ${PYTHON_NODE}"  // Debugging step to check the hostname
