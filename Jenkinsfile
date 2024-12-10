@@ -143,7 +143,8 @@ pipeline {
                 cd dev
                 ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} '
                     cd /tmp/
-                    sudo yum install python3-pip -y
+                    sudo yum update -y  
+                    sudo yum install python3-pip -y  
                     pip3 install pytest
                     pytest hello.py
                     '
