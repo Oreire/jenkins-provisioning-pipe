@@ -119,7 +119,7 @@ pipeline {
                 sh """
                     env
                     cd dev
-                    ssh -o StrictHostKeyChecking=no -t ec2-user@${NGINX_NODE} '
+                    ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
                         scp -o StrictHostKeyChecking=no ../NG.conf ec2-user@${NGINX_NODE}:/etc/nginx/nginx.conf
                         sudo nginx -t
                         sudo systemctl restart nginx
