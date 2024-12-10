@@ -167,7 +167,6 @@ stage('Run Tests') {
                 ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} <<-EOF
                     sudo yum install python3-pip -y
                     pip3 install pytest
-                    cd /tmp/
                     pytest hello.py  || true  # Ensure the script does not exit immediately on failure
                     EOF
             '''
