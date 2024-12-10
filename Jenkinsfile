@@ -155,7 +155,7 @@ pipeline {
 
 stage('Run Tests') {
     when {
-        expression { params.DEPLOY_OPTIONS == 'APPS' }
+        expression { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL' }
     }
     environment {
         PYTHON_NODE = sh(script: "cd dev; terraform output -raw Pynode_dns", returnStdout: true).trim()
