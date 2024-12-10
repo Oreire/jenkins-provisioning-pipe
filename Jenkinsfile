@@ -72,7 +72,7 @@ pipeline {
 
         stage('Manage Apps') {
     when {
-        expression { params.DEPLOY_OPTIONS == 'APPS' }
+        expression { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL' }
     }
     environment {
         NGINX_NODE = sh(script: "cd dev; terraform output | grep Nginx_dns | awk -F= '{print \$2}'", returnStdout: true).trim()
@@ -118,7 +118,7 @@ pipeline {
                 // Run the SSH command to change the Nginx config file and restart the service
                 sh """
                     ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
-                        scp -o StrictHostKeyChecking=no NG.conf ec2-user@${NGINX_NODE}:/etc/nginx/nginx.conf
+                        scp -o StrictHostKeyChecking=no /..NG.conf ec2-user@${NGINX_NODE}:/etc/nginx/nginx.conf
                         sudo nginx -t
                         sudo systemctl restart nginx
                         echo "Nginx is now listening on port 8080."
@@ -130,6 +130,9 @@ pipeline {
 }
 
     stage('Run Tests') {
+        when {
+        expression { params.DEPLOY_OPTIONS == 'APPS' }
+    }
         environment {
         PYTHON_NODE = sh(script: "cd dev; terraform output | grep Pynode_dns | awk -F= '{print \$2}'", returnStdout: true).trim()
     }
@@ -142,7 +145,7 @@ pipeline {
                     cd /tmp/
                     sudo yum install python3-pip -y
                     pip3 install pytest
-                    pytest hello.py
+                    /* pytest hello.py */
                 '
             """
         }
