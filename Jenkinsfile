@@ -168,7 +168,7 @@ stage('Run Tests') {
                     cd /tmp/
                     sudo yum install python3-pip -y
                     pip3 install pytest
-                    pytest hello.py || true  # Ensure the script does not exit immediately on failure
+                    pytest ../hello.py || true  # Ensure the script does not exit immediately on failure
                     EOF
             '''
         }
