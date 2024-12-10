@@ -129,7 +129,7 @@ pipeline {
     }
 }
 
-    /* stage('Run Tests') {
+    stage('Run Tests') {
     when {
         expression { params.DEPLOY_OPTIONS == 'APPS' }
     }
@@ -150,9 +150,9 @@ pipeline {
             '''
         }
     }
-} */
+}
 
-stage('Run Tests') {
+/* stage('Run Tests') {
     when {
         expression { params.DEPLOY_OPTIONS == 'APPS' }
     }
@@ -172,7 +172,7 @@ stage('Run Tests') {
             '''
         }
     }
-}
+} */
 stage('Notification') { 
             steps { 
                 echo 'This stage provides the slack notification for the outcome of the pipeline Build' 
