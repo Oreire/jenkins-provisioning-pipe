@@ -107,7 +107,7 @@ pipeline {
     environment {
         // Fetch Nginx node from Terraform output
         NGINX_NODE = sh(script: "cd dev; terraform output | grep Nginx_dns | awk -F= '{print \$2}'", returnStdout: true).trim()
-        NGINX_CONFIG_PATH = '/etc/nginx/nginx.conf'
+        // NGINX_CONFIG_PATH = '/etc/nginx/nginx.conf'
     }
     steps {
         script {
