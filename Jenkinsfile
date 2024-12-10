@@ -130,27 +130,28 @@ pipeline {
 }
 
     stage('Run Tests') {
-        when {
+    when {
         expression { params.DEPLOY_OPTIONS == 'APPS' }
     }
-        environment {
+    environment {
         PYTHON_NODE = sh(script: "cd dev; terraform output | grep Pynode_dns | awk -F= '{print \$2}'", returnStdout: true).trim()
     }
-    
     steps {
         sshagent(credentials: ['PRIVATE_SSH_KEY']) {
-            sh """
+            sh '''
                 cd dev
+                echo "Running tests on Python node: ${PYTHON_NODE}"
                 ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} '
                     cd /tmp/
                     sudo yum install python3-pip -y
                     pip3 install pytest
-                    /* pytest hello.py */
-                '
-            """
+                    pytest hello.py
+                    '
+            '''
         }
     }
 }
+
 
        
 
