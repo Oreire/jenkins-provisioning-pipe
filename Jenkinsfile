@@ -129,7 +129,7 @@ pipeline {
     }
 }
 
-    stage('Run Tests') {
+    /* stage('Run Tests') {
     when {
         expression { params.DEPLOY_OPTIONS == 'APPS' }
     }
@@ -150,10 +150,31 @@ pipeline {
             '''
         }
     }
+} */
+
+stage('Run Tests') {
+    when {
+        expression { params.DEPLOY_OPTIONS == 'APPS' }
+    }
+    environment {
+        PYTHON_NODE = sh(script: "cd dev; terraform output -raw Pynode_dns", returnStdout: true).trim()
+    }
+    steps {
+        echo "Python node value: ${PYTHON_NODE}"  // Debugging step to check the hostname
+        sshagent(credentials: ['PRIVATE_SSH_KEY']) {
+            sh '''
+                cd dev
+                ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} << 'EOF'
+                    cd /tmp/
+                    sudo yum install python3-pip -y
+                    pip3 install pytest
+                    pytest hello.py
+                EOF
+            '''
+        }
+    }
 }
-
-
-       
+     
 
         stage('Notification') { 
             steps { 
