@@ -13,24 +13,21 @@ provider "aws" {
 }
 
 #Create Security Group for two EC2 Instances  named Nginx (Node 1)  
-
 resource "aws_security_group" "ssh_sg" {
   name        = "SSH-SG"
   description = "Security Group for Nginx Node 1"
-    # ... other configuration ...
+   # ... other configuration ...
   egress {
     from_port   = 0
     to_port     = 0
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
-
   }
   ingress {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-
   }
   ingress {
     from_port   = 80
@@ -43,7 +40,6 @@ resource "aws_security_group" "ssh_sg" {
     to_port     = 8080
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
-
   }
 }
 
