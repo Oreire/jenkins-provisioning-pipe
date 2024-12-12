@@ -139,14 +139,8 @@ stage('Run Tests') {
         echo "Python node value: ${PYTHON_NODE}"  // Debugging step to check the hostname
         sshagent(credentials: ['PRIVATE_SSH_KEY']) {
             sh '''
-                cd dev
-                ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} '
-                    cd /tmp/
-                    sudo yum update -y  
-                    sudo yum install python3-pip -y  
-                    pip3 install pytest
-                    pytest hello.py 
-                    '
+            cd dev
+            ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'cd /tmp/ ; sudo yum update -y ; sudo yum install python3-pip -y ; pip3 install pytest ; pytest hello.py'
             '''
         }
     }
@@ -185,5 +179,11 @@ stage('Notification') {
                 }
             }
         }
+        // AAAAA
+            always { 
+                echo 'Cleaning up workspace...' 
+                cleanWs() 
+            }
+        // BBBBB
     }
 }
