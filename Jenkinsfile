@@ -100,7 +100,7 @@ pipeline {
         }
     }
 }
-    stage('Modify Nginx Port') {
+    /* stage('Modify Nginx Port') {
     when {
         expression { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL' }
     }
@@ -119,21 +119,49 @@ pipeline {
                 sh """
                     cd dev
                                      
-                    scp -o StrictHostKeyChecking=no -i NG.conf ec2-user@${NGINX_NODE}:~/
+                    scp -o StrictHostKeyChecking=no NG.conf ec2-user@${NGINX_NODE}:~/
                     ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
                     sudo mv ~/NG.conf /etc/nginx/nginx.conf
                     sudo systemctl restart nginx
                     sudo nginx -t
                     sudo nano /etc/nginx/nginx.conf
                     echo "Nginx is now listening on port 8080" '
-                """
-                    
-              
+                  """
+            }
+        }
+    }
+} */
+stage('Modify Nginx Port') {
+            when {
+                expression { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL' }
+            }
+    environment {
+        NGINX_CONFIG_PATH = '/etc/nginx/nginx.conf'
+        LOCAL_FILE_PATH = 'NG.conf'
+    }
+            steps {
+                script {
+                    // Fetch Nginx node from Terraform output
+                    NGINX_NODE = sh(script: "cd dev; terraform output | grep Nginx_dns | awk -F= '{print \$2}'", returnStdout: true).trim()
+
+                    // Ensure SSH key is available
+                    sshagent(credentials: ['PRIVATE_SSH_KEY']) {
+                        echo "Changing Nginx to listen on port 8080..."
+                        
+                        // Copy the config file and update Nginx settings
+                        sh """
+                            scp -o StrictHostKeyChecking=no ${LOCAL_FILE_PATH} ec2-user@${NGINX_NODE}:~/
+                            ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
+                                sudo mv ~/NG.conf ${NGINX_CONFIG_PATH}
+                                sudo nginx -t
+                                sudo systemctl restart nginx
+                                echo "Nginx is now listening on port 8080"
+                            '
+                        """
             }
         }
     }
 }
-
 stage('Run Tests') {
     when {
         expression { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL' }
