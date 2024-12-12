@@ -118,7 +118,7 @@ pipeline {
                 // Run the SSH command to change the Nginx config file and restart the service
                 sh """
                     ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
-                    sudo sed -i 's/listen 80;/listen 8080;/g' /etc/nginx/nginx.conf
+                    sudo sed -i 's/listen 80/listen 8080/' /etc/nginx/sites-available/default
 
                         /* scp -o StrictHostKeyChecking=no /..NG.conf ec2-user@${NGINX_NODE}:/etc/nginx/nginx.conf
                         sudo nginx -t */
