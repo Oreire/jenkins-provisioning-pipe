@@ -118,8 +118,10 @@ pipeline {
                 // Run the SSH command to change the Nginx config file and restart the service
                 sh """
                     ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
-                        scp -o StrictHostKeyChecking=no /..NG.conf ec2-user@${NGINX_NODE}:/etc/nginx/nginx.conf
-                        sudo nginx -t
+                    sudo sed -i 's/listen 80;/listen 8080;/g' /etc/nginx/nginx.conf
+
+                        /* scp -o StrictHostKeyChecking=no /..NG.conf ec2-user@${NGINX_NODE}:/etc/nginx/nginx.conf
+                        sudo nginx -t */
                         sudo systemctl restart nginx
                         echo "Nginx is now listening on port 8080." '
                 """
