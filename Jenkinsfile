@@ -100,38 +100,7 @@ pipeline {
         }
     }
 }
-    /* stage('Modify Nginx Port') {
-    when {
-        expression { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL' }
-    }
-    environment {
-        // Fetch Nginx node from Terraform output
-        NGINX_NODE = sh(script: "cd dev; terraform output | grep Nginx_dns | awk -F= '{print \$2}'", returnStdout: true).trim()
-        // NGINX_CONFIG_PATH = '/etc/nginx/nginx.conf'
-    }
-    steps {
-        script {
-            sshagent(credentials: ['PRIVATE_SSH_KEY']) {
-                // Modify Nginx config to listen on port 8080
-                echo "Changing Nginx to listen on port 8080..."
-                
-                // Run the SSH command to change the Nginx config file and restart the service
-                sh """
-                    cd dev
-                                     
-                    scp -o StrictHostKeyChecking=no NG.conf ec2-user@${NGINX_NODE}:~/
-                    ssh -o StrictHostKeyChecking=no ec2-user@${NGINX_NODE} '
-                    sudo mv ~/NG.conf /etc/nginx/nginx.conf
-                    sudo systemctl restart nginx
-                    sudo nginx -t
-                    sudo nano /etc/nginx/nginx.conf
-                    echo "Nginx is now listening on port 8080" '
-                  """
-            }
-        }
-    }
-} */
-stage('Modify Nginx Port') {
+    stage('Modify Nginx Port') {
             when {
                 expression { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL' }
             }
@@ -194,7 +163,7 @@ stage('Notification') {
                     curl -X POST \
                     -H 'Authorization: Bearer ${SLACK_ID}' \
                     -H 'Content-Type: application/json' \
-                    --data '{"channel": "devops-masterclass-2024", "text": "This Jenkins Alert for pipeline BUILD SUCCESS for Week 10 Project"}' \
+                    --data '{"channel": "devops-masterclass-2024", "text": "NGINX PORT MODIFICATION SUCCESSFUL"}' \
                     https://slack.com/api/chat.postMessage
                     """
                 }
@@ -207,7 +176,7 @@ stage('Notification') {
                     curl -X POST \
                     -H 'Authorization: Bearer ${SLACK_ID}' \
                     -H 'Content-Type: application/json' \
-                    --data '{"channel": "devops-masterclass-2024", "text": "This Jenkins Alert indicates pipeline BUILD FAILURE for Week 10 Project"}' \
+                    --data '{"channel": "devops-masterclass-2024", "text": "NGINX PORT MODIFICATION FAILURE"}' \
                     https://slack.com/api/chat.postMessage
                     """
                 }
