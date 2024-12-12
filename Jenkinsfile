@@ -121,8 +121,7 @@ pipeline {
                         scp -o StrictHostKeyChecking=no /..NG.conf ec2-user@${NGINX_NODE}:/etc/nginx/nginx.conf
                         sudo nginx -t
                         sudo systemctl restart nginx
-                        echo "Nginx is now listening on port 8080."
-'
+                        echo "Nginx is now listening on port 8080." '
                 """
             }
         }
