@@ -179,11 +179,12 @@ stage('Notification') {
                 }
             }
         }
-        // AAAAA
-            always { 
-                echo 'Cleaning up workspace...' 
-                cleanWs() 
-            }
-        // BBBBB
+        // UTILISES THE WORKSPACE CLEANUP PLUGIN
+        always { 
+            echo 'Commences the Cleaning up of the Working Directory after each BUILD' 
+            cleanWs()
+            echo 'The Workspace Cleanup process was successful'    
+        }
+        
     }
 }
