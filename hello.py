@@ -18,10 +18,10 @@ def test_code2():
 
 
 def test_code3():
-  """ this is just a vanilla test """
-  assert 4>5
-   
+    """ This is just a vanilla test """
+    assert 5 > 4
 
+   
 def handle_client(conn, addr):
     """Handle communication with a connected client."""
     print(f"Connected by {addr}")
