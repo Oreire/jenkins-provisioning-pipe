@@ -137,7 +137,7 @@ stage('Run Tests') {
     }
     environment {
         PYTHON_NODE = sh(script: "cd dev; terraform output -raw Pynode_dns", returnStdout: true).trim()
-        LOCAL_FILE_PATH_2 = 'python.service'
+        LOCAL_FILE_PATH_2 = '~/python.service'
     }
     steps {
         echo "Python node value: ${PYTHON_NODE}"  // Debugging step to check the hostname
