@@ -143,7 +143,11 @@ stage('Run Tests') {
         sshagent(credentials: ['PRIVATE_SSH_KEY']) {
             sh '''
             cd dev
-            ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'cd /tmp/ ; sudo yum update -y ; sudo yum install python3-pip -y ; pip3 install pytest ; pytest hello.py'
+            ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'cd /tmp/ ; sudo yum update -y ; sudo yum install python3-pip -y ; pip3 install pytest ; pytest hello.py ; sudo systemctl daemon-reload ; sudo systemctl enable python.service ; sudo systemctl start python.service'
+            
+
+
+
             '''
         }
     }
