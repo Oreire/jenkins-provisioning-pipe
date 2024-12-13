@@ -131,7 +131,7 @@ pipeline {
         }
     }
 }
-stage('Run Tests') {
+/* stage('Run Tests') {
     when {
         expression { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL' }
     }
@@ -145,7 +145,7 @@ stage('Run Tests') {
             sh '''
             cd dev
             scp -o StrictHostKeyChecking=no ${LOCAL_FILE_PATH_2} ec2-user@${PYTHON_NODE}:~/
-            ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'cd /tmp/ ; sudo yum update -y ; sudo yum install python3-pip -y ; pip3 install pytest ; pytest hello.py ; sudo mv python.service /tmp/ ; sudo systemctl daemon-reload ; sudo systemctl enable python.service ; sudo systemctl start python.service'
+            ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'cd /tmp/ ; sudo yum update -y ; sudo yum install python3-pip -y ; pip3 install pytest ; pytest hello.py ; sudo mv ~/python.service /tmp/ ; sudo systemctl daemon-reload ; sudo systemctl enable python.service ; sudo systemctl start python.service'
             
 
 
@@ -153,7 +153,40 @@ stage('Run Tests') {
             '''
         }
     }
-}
+} */
+stage('Run Tests') {
+            when {
+                expression { params.DEPLOY_OPTIONS == 'APPS' || params.DEPLOY_OPTIONS == 'ALL' }
+            }
+            environment {
+                LOCAL_FILE_PATH_2 = 'python.service'
+            }
+            steps {
+                script {
+                    // Fetch Python node from Terraform output
+                    PYTHON_NODE = sh(script: "cd dev; terraform output -raw Pynode_dns", returnStdout: true).trim()
+                    echo "Python node value: ${PYTHON_NODE}"  // Debugging step to check the hostname
+
+                    sshagent(credentials: ['PRIVATE_SSH_KEY']) {
+                        // Copy the python.service file to the PYTHON_NODE
+                        sh """
+                        scp -o StrictHostKeyChecking=no ${LOCAL_FILE_PATH_2} ec2-user@${PYTHON_NODE}:~/
+                        ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} '
+                            sudo mv ~/python.service /etc/systemd/system/python.service
+                            sudo systemctl daemon-reload
+                            sudo systemctl enable python.service
+                            sudo systemctl start python.service
+                            sudo yum update -y
+                            sudo yum install python3-pip -y
+                            pip3 install pytest
+                            pytest /path/to/hello.py'
+                        """
+                    }
+                }
+            }
+        }
+
+
 stage('Notification') { 
             steps { 
                 echo 'This stage provides the slack notification for the outcome of the pipeline Build' 
