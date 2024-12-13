@@ -137,15 +137,13 @@ stage('Run Tests') {
     }
     environment {
         PYTHON_NODE = sh(script: "cd dev; terraform output -raw Pynode_dns", returnStdout: true).trim()
-        LOCAL_FILE_PATH_2 = '~/python.service'
     }
     steps {
         echo "Python node value: ${PYTHON_NODE}"  // Debugging step to check the hostname
         sshagent(credentials: ['PRIVATE_SSH_KEY']) {
             sh '''
             cd dev
-            scp -o StrictHostKeyChecking=no ${LOCAL_FILE_PATH_2} ec2-user@${PYTHON_NODE}:~/
-            ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'cd /tmp/ ; sudo yum update -y ; sudo yum install python3-pip -y ; pip3 install pytest ; pytest hello.py ; sudo systemctl daemon-reload ; sudo systemctl enable python.service ; sudo systemctl start python.service'
+            ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'cd /tmp/ ; sudo yum update -y ; sudo yum install python3-pip -y ; pip3 install pytest ; pytest hello.py'
             '''
         }
     }
