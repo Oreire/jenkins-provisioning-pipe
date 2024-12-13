@@ -179,7 +179,7 @@ stage('Run Tests') {
                             sudo yum update -y
                             sudo yum install python3-pip -y
                             pip3 install pytest
-                            pytest /path/to/hello.py'
+                            pytest hello.py'
                         """
                     }
                 }
