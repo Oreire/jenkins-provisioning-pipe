@@ -163,7 +163,7 @@ stage('Notification') {
                     curl -X POST \
                     -H 'Authorization: Bearer ${SLACK_ID}' \
                     -H 'Content-Type: application/json' \
-                    --data '{"channel": "devops-masterclass-2024", "text": "NGINX PORT MODIFICATION SUCCESSFUL"}' \
+                    --data '{"channel": "devops-masterclass-2024", "text": "NGINX SERVER SUCCESSFULLY CONFIGURED AS A REVERSE PROXY"}' \
                     https://slack.com/api/chat.postMessage
                     """
                 }
@@ -176,7 +176,7 @@ stage('Notification') {
                     curl -X POST \
                     -H 'Authorization: Bearer ${SLACK_ID}' \
                     -H 'Content-Type: application/json' \
-                    --data '{"channel": "devops-masterclass-2024", "text": "NGINX PORT MODIFICATION FAILURE"}' \
+                    --data '{"channel": "devops-masterclass-2024", "text": "NGINX SERVER FAILED CONFIGURATION AS A REVERSE PROXY"}' \
                     https://slack.com/api/chat.postMessage
                     """
                 }
