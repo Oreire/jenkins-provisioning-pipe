@@ -80,7 +80,7 @@ pipeline {
     }
     steps {
         script {
-            sshagent(credentials: ['PRIVATE_SSH_KEY']) {
+            sshagent(credentials: ['SSH_PRIVATE_KEY']) {
                 sh """
                 env
                 cd dev
@@ -114,7 +114,7 @@ pipeline {
                     NGINX_NODE = sh(script: "cd dev; terraform output | grep Nginx_dns | awk -F= '{print \$2}'", returnStdout: true).trim()
 
                     // Ensure SSH key is available
-                    sshagent(credentials: ['PRIVATE_SSH_KEY']) {
+                    sshagent(credentials: ['SSH_PRIVATE_KEY']) {
                         echo "Changing Nginx to listen on port 8080..."
                         
                         // Copy the config file and update Nginx settings
@@ -140,7 +140,7 @@ stage('Run Tests') {
     }
     steps {
         echo "Python node value: ${PYTHON_NODE}"  // Debugging step to check the hostname
-        sshagent(credentials: ['PRIVATE_SSH_KEY']) {
+        sshagent(credentials: ['SSH_PRIVATE_KEY']) {
             sh '''
             cd dev
             ssh -o StrictHostKeyChecking=no ec2-user@${PYTHON_NODE} 'cd /tmp/ ; sudo yum update -y ; sudo yum install python3-pip -y ; pip3 install pytest ; pytest hello.py'
