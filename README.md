@@ -1,4 +1,5 @@
 # jenkins-provisioning-pipe
+# Designed a modular Jenkins pipeline for secure cloud provisioning, app deployment, and automated testing using Terraform, SSH, and Slack notifications
 
 # dev folder contains the Terraform configuration files with the output
     
