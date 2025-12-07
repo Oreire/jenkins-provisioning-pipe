@@ -1,6 +1,18 @@
 # jenkins-provisioning-pipe
 # Designed a modular Jenkins pipeline for secure cloud provisioning, app deployment, and automated testing using Terraform, SSH, and Slack notifications
 
+Overview:
+Designed and implemented a modular Jenkins pipeline to automate secure cloud provisioning, remote application deployment, and continuous delivery workflows. The pipeline leveraged Terraform for Infrastructure as Code (IaC), ensuring consistent and repeatable provisioning of cloud resources. Jenkins orchestrated the end‑to‑end workflow, including infrastructure setup, application configuration, and automated testing. Real‑time Slack integration provided immediate feedback on build and deployment status, enhancing collaboration and visibility across teams. This project demonstrates best practices in IaC, secure remote management, and CI/CD automation, delivering a scalable and production‑ready DevOps solution.
+
+Tools & Technologies
+
+• Jenkins (pipeline orchestration)
+• Terraform (Infrastructure as Code)
+• Slack (real‑time CI/CD feedback)
+• Cloud provider (AWS/Azure, depending on implementation)
+• Remote deployment & testing frameworks
+
+
 This project implements a fully automated, **Terraform-driven CI/CD pipeline** for provisioning infrastructure, deploying and configuring applications, running tests, and delivering real-time feedback via Slack — all orchestrated through **Jenkins**. It demonstrates **best practices in Infrastructure as Code (IaC)**, **secure remote management**, and **continuous delivery workflows**.
 
 ## 🚀 Overview
